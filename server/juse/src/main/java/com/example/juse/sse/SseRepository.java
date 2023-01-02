@@ -1,4 +1,4 @@
-package com.example.juse.notification.sse;
+package com.example.juse.sse;
 
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -8,13 +8,13 @@ public interface SseRepository<T> {
 
     SseEmitter saveSse(String emitterId, SseEmitter sseEmitter);
 
-    Object saveEvent(String eventId, Object event);
+    T saveEvent(String eventId, T event);
 
-    Map<String, SseEmitter> findAllSseByMemberUUID(String memberUUID);
+    Map<String, SseEmitter> findAllSseByUserUUID(String userUUID);
 
-    Map<String, Object> findAllEventsByMemberUUID(String memberUUID);
+    Map<String, T> findAllEventCachesByUserUUID(String userUUID);
 
     void deleteEmitterById(String emitterId);
 
-    void deleteAllEmittersByMemberUUID(String memberUUID);
+    void deleteAllEmittersByUserUUID(String userUUID);
 }

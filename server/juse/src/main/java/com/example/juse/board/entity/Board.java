@@ -33,6 +33,8 @@ public class Board extends Auditing {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private String url;
     private int backend;
     private int curBackend;
     private int frontend;

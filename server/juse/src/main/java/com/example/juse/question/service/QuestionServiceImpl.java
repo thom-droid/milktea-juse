@@ -2,14 +2,17 @@ package com.example.juse.question.service;
 
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.service.BoardService;
+import com.example.juse.event.NotificationEvent;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.notification.entity.Notification;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.mapper.QuestionMapper;
 import com.example.juse.question.repository.QuestionRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,9 @@ public class QuestionServiceImpl implements QuestionService{
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
 
+    private final ApplicationEventPublisher eventPublisher;
+
+
     @Override
     @Transactional
     public Question create(Question post) {
@@ -37,6 +43,10 @@ public class QuestionServiceImpl implements QuestionService{
 
         post.addBoard(board);
         post.addUser(user);
+
+        Notification notification = Notification.of(Notification.Type.NEW_REPLY, board.getUser(), board.getUrl());
+
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
 
         return questionRepository.save(post);
     }

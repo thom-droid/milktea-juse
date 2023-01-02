@@ -1,4 +1,4 @@
-package com.example.juse.helper.resolver;
+package com.example.juse.helper.resolver.uri;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

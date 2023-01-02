@@ -1,4 +1,4 @@
-package com.example.juse.helper.resolver;
+package com.example.juse.helper.resolver.uri;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
