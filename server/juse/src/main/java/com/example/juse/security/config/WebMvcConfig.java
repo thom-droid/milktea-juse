@@ -1,13 +1,12 @@
 package com.example.juse.security.config;
 
-import org.springframework.boot.web.servlet.view.MustacheViewResolver;
+import com.example.juse.helper.resolver.uri.RequestURLArgumentResolver;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -28,5 +27,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/images/**", "/images/resize")
                 .addResourceLocations("file:///C:/images/", "file:///C:/images/resize");
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new RequestURLArgumentResolver());
     }
 }
