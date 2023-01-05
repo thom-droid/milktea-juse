@@ -12,6 +12,7 @@ import com.example.juse.question.repository.QuestionRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Profile("plain")
 @RequiredArgsConstructor
 @Service
@@ -45,6 +47,8 @@ public class QuestionServiceImpl implements QuestionService{
         post.addUser(user);
 
         Notification notification = Notification.of(Notification.Type.NEW_REPLY, board.getUser(), board.getUrl());
+
+        log.info("question saved. the event is ready to be sent");
 
         eventPublisher.publishEvent(new NotificationEvent(this, notification));
 
