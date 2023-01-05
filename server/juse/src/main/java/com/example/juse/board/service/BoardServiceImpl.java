@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +56,13 @@ public class BoardServiceImpl implements BoardService {
         );
 
         post.addUser(foundUser);
+
+        boardRepository.save(post);
+
+        String id = post.getId().toString();
+        String uri = post.getUrl();
+
+        UriComponentsBuilder.fromHttpUrl(uri).pathSegment(id).build();
 
         return boardRepository.save(post);
     }
