@@ -57,7 +57,10 @@ public class TestDB {
                 .email("test1@gmail.com")
                 .build();
 
+        SocialUser socialUser2 = SocialUser.builder().role("MEMBER").email("test2@gmail.com").build();
+
         SocialUser socialUser1 = socialUserRepository.save(socialUser);
+        socialUserRepository.save(socialUser2);
 
         User data = User.builder()
                 .socialUser(socialUser1)
@@ -67,7 +70,16 @@ public class TestDB {
                 .portfolio("hey")
                 .build();
 
+        User data2 = User.builder()
+                .socialUser(socialUser2)
+                .introduction("user2")
+                .email(socialUser2.getEmail())
+                .nickname("user2")
+                .portfolio("noob")
+                .build();
+
         User user = userRepository.save(data);
+        userRepository.save(data2);
 
         Board board = Board.builder()
                 .type(Board.Type.PROJECT)

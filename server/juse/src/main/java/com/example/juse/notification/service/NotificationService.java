@@ -6,7 +6,6 @@ import com.example.juse.sse.CustomSse;
 import com.example.juse.sse.SseSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Map;
@@ -18,7 +17,7 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final CustomSse<Notification> customSse;
 
-    @Transactional
+
     public void send(Notification notification) {
         Notification savedNotification = save(notification);
         String userUUID = notification.getReceiver().getUuid();

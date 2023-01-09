@@ -18,8 +18,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
 @Slf4j
 @Profile("plain")
 @RequiredArgsConstructor
@@ -50,9 +48,11 @@ public class QuestionServiceImpl implements QuestionService{
 
         log.info("question saved. the event is ready to be sent");
 
+        Question savedQuestion = questionRepository.save(post);
+
         eventPublisher.publishEvent(new NotificationEvent(this, notification));
 
-        return questionRepository.save(post);
+        return savedQuestion;
     }
 
     @Override
