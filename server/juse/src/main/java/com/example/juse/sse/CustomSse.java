@@ -14,7 +14,7 @@ import java.util.Map;
 public class CustomSse<T> {
 
     private final SseRepository<T> sseRepository;
-    private T object;
+    private Object object;
 
     public SseSource createSseSourceOf(String userUUID, String lastEventId) {
 
@@ -31,7 +31,6 @@ public class CustomSse<T> {
         }
 
         SseEmitter sseEmitter = sseRepository.saveSse(emitterId, infoHolder.getSseEmitter());
-        sseRepository.saveEvent(emitterId, object);
         setCallBackOption(sseEmitter, emitterId);
 
         return infoHolder;
