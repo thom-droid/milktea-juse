@@ -5,6 +5,7 @@ import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.social.repository.SocialUserRepository;
+import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.repository.TagRepository;
 import com.example.juse.tag.repository.UserTagRepository;
@@ -31,9 +32,9 @@ public class TestDB {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-
     @Bean
-    public void populateTag() {
+    public void populate() {
+
         Tag tag = Tag.builder()
                 .type(Tag.Type.BACKEND)
                 .name("java")
@@ -50,10 +51,6 @@ public class TestDB {
                 .build();
 
         tagRepository.saveAll(List.of(tag, tag2, tag3));
-    }
-
-    @Bean
-    public void populateSocialUser() {
 
         SocialUser socialUser = SocialUser.builder()
                 .role("MEMBER")
@@ -97,6 +94,9 @@ public class TestDB {
                 .period("6")
                 .onOffline("online")
                 .build();
+
+        BoardTag boardTag1 = BoardTag.of(board, tag);
+        board.getBoardTagList().add(boardTag1);
 
         boardRepository.save(board);
 

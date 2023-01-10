@@ -4,6 +4,7 @@ import com.example.juse.board.dto.BoardRequestDto;
 import com.example.juse.board.dto.BoardResponseDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.mapper.BoardMapper;
+import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.board.service.BoardService;
 import com.example.juse.dto.MultiResponseDto;
 import com.example.juse.dto.Pagination;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 @RestController
 public class BoardController {
 
+    private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final BoardMapper boardMapper;
 
@@ -167,4 +169,13 @@ public class BoardController {
         return new ResponseEntity<>(new MultiResponseDto<>(data, pagination), HttpStatus.OK);
 
     }
+
+    @GetMapping("/test")
+    public List<BoardResponseDto.Multi> getAllBoardForTest() {
+        List<Board> all = boardRepository.findAll();
+        List<BoardResponseDto.Multi> list = boardMapper.toListDtoFromListEntities(all);
+        return list;
+    }
+
+
 }

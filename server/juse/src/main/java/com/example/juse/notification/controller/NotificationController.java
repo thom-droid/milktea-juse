@@ -57,8 +57,9 @@ public class NotificationController {
         Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("createdAt").descending());
 
         Page<Notification> responsePage = notificationService.getNotificationList(userId, isRead, pageable);
+        List<Notification> content = responsePage.getContent();
+        List<NotificationResponseDto> responseDtoList = notificationMapper.mapToDtoListFromEntityList(content);
 
-        List<NotificationResponseDto> responseDtoList = notificationMapper.mapToDtoListFromEntityList(responsePage.getContent());
         responseDtoList.forEach(responseDto -> log.info("notification msg : {}", responseDto.getMessage()));
 
         Pagination pagination = Pagination.of(responsePage);

@@ -47,4 +47,8 @@ public class NotificationService {
         return notificationRepository.findByReceiverIdAndIsRead(userId, isRead, pageable);
     }
 
+    public Notification getNotification(Long notificationId) {
+        return notificationRepository.findById(notificationId).orElseThrow();
+    }
+
 }

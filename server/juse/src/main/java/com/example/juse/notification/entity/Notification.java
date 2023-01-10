@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
+@Table(name = "NOTIFICATIONS")
 public class Notification extends Auditing {
 
     @Id

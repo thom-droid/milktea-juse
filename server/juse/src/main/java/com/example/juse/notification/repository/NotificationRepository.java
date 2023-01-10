@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    @Query("SELECT n.isRead, n.message, n.receiver.id, n.relatedURL, n.type " +
+    @Query("SELECT n " +
             "FROM Notification n " +
             "WHERE n.receiver.id = :receiverId " +
             "AND n.isRead = :isRead")
