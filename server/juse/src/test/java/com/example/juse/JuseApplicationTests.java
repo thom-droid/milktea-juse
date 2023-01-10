@@ -14,12 +14,12 @@ public class JuseApplicationTests {
     protected String accessToken;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    protected JwtTokenProvider jwtTokenProvider;
 
     @BeforeEach
     public void initJwtToken() {
 
-        TokenDto token = jwtTokenProvider.generateToken("test1@gmail.com", "ROLE_MEMBER");
+        TokenDto token = jwtTokenProvider.generateToken("test2@gmail.com", "ROLE_MEMBER");
         accessToken = token.getAccessToken();
 
     }

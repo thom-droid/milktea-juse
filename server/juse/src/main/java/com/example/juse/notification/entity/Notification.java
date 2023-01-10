@@ -1,5 +1,6 @@
 package com.example.juse.notification.entity;
 
+import com.example.juse.audit.Auditing;
 import com.example.juse.user.entity.User;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-public class Notification {
+public class Notification extends Auditing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,6 +2,7 @@ package com.example.juse.helper.stubservice;
 
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
+import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.social.repository.SocialUserRepository;
 import com.example.juse.tag.entity.Tag;
@@ -27,6 +28,8 @@ public class TestDB {
     private final UserRepository userRepository;
     private final UserTagRepository userTagRepository;
     private final BoardRepository boardRepository;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     @Bean
@@ -97,6 +100,11 @@ public class TestDB {
 
         boardRepository.save(board);
 
+        String token1 = jwtTokenProvider.generateToken(data.getEmail(), "ROLE_MEMBER").getAccessToken();
+        String token2 = jwtTokenProvider.generateToken(data2.getEmail(), "ROLE_MEMBER").getAccessToken();
+
+        System.out.println("user 1 : " + token1);
+        System.out.println("user 2 : " + token2);
     }
 
 }

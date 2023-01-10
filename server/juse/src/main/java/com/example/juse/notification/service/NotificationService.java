@@ -5,6 +5,8 @@ import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.sse.CustomSse;
 import com.example.juse.sse.SseSource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -40,4 +42,9 @@ public class NotificationService {
     public Notification save(Notification notification) {
         return notificationRepository.save(notification);
     }
+
+    public Page<Notification> getNotificationList(Long userId, Boolean isRead, Pageable pageable) {
+        return notificationRepository.findByReceiverIdAndIsRead(userId, isRead, pageable);
+    }
+
 }
