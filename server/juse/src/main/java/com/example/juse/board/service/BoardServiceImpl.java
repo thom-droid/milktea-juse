@@ -57,12 +57,13 @@ public class BoardServiceImpl implements BoardService {
 
         post.addUser(foundUser);
 
-        boardRepository.save(post);
+        Board board = boardRepository.save(post);
 
         String id = post.getId().toString();
-        String uri = post.getUrl();
+        String url = post.getUrl();
 
-        UriComponentsBuilder.fromHttpUrl(uri).pathSegment(id).build();
+        String builtUri = UriComponentsBuilder.fromHttpUrl(url).pathSegment(id).build().toUriString();
+        board.setUrl(builtUri);
 
         return boardRepository.save(post);
     }

@@ -1,7 +1,9 @@
 package com.example.juse.board.controller;
 
+import com.example.juse.JuseApplicationTests;
 import com.example.juse.board.dto.BoardRequestDto;
 import com.example.juse.board.entity.Board;
+import com.example.juse.board.repository.BoardRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
@@ -20,21 +22,24 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@ActiveProfiles({"testonly", "plain", "oauth"})
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 @AutoConfigureMockMvc
-class BoardControllerTest {
+class BoardControllerTest extends JuseApplicationTests {
 
     @Autowired
-    Gson gson;
+    private Gson gson;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private BoardRepository boardRepository;
 
 
     @WithMockUser
@@ -55,18 +60,20 @@ class BoardControllerTest {
                 .build();
 
         String request = objectMapper.writeValueAsString(postDto);
-        System.out.println(request);
-
 
         ResultActions resultActions = mockMvc
                 .perform(post("/boards")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
+                        .header("Auth", accessToken)
                 );
 
         resultActions.andExpect(status().isCreated()).andDo(print());
 
+        String expectedUrl = resultActions.andReturn().getRequest().getRequestURL() + "/2";
+
+        resultActions.andExpect(jsonPath("$.data.url").value(expectedUrl));
 
     }
 }
