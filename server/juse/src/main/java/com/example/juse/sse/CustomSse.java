@@ -56,8 +56,8 @@ public class CustomSse<T> {
         SseEmitter sseEmitter = source.getSseEmitter();
 
         try {
-            log.info("sending data: {} ", data);
             sseEmitter.send(SseEmitter.event().id(emitterId).data(data));
+            log.info("sending data: {} ", data);
         } catch (IOException e) {
             log.debug("event push failed. info : {} / " + "error message : {}", emitterId, e.getMessage());
             sseRepository.deleteEmitterById(emitterId);
