@@ -5,9 +5,12 @@ import com.example.juse.application.repository.ApplicationRepository;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.board.service.BoardService;
+import com.example.juse.event.NotificationEvent;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.notification.entity.Notification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +24,10 @@ public class ApplicationServiceImpl implements ApplicationService{
     private final BoardRepository boardRepository;
     private final BoardService boardService;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     @Override
+    @Transactional
     public Application create(Application mappedObj) {
         long userId = mappedObj.getUser().getId();
 
@@ -34,14 +40,13 @@ public class ApplicationServiceImpl implements ApplicationService{
         checkPositionAvailability(board, position);
         checkDuplicatedByUserIdAndBoardId(userId, boardId);
 
-        Application findApply = findUserIdApplication(userId);
-        System.out.println("findApply.toString() = " + findApply.toString());
+        Notification notification = Notification.of(Notification.Type.NEW_APPLICATION, board.getUser(), board.getUrl());
 
-//        if (findApply.getId() != null && userId == findApply.getUser().getId()) {
-//            throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
-//        }
+        Application application = applicationRepository.save(mappedObj);
 
-        return applicationRepository.save(mappedObj);
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
+
+        return application;
     }
 
     @Override

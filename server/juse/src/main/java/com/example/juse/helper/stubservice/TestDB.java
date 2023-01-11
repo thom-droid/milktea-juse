@@ -88,6 +88,7 @@ public class TestDB {
                 .content("test1")
                 .url("http://localhost:8080/board/1")
                 .people(5)
+                .backend(3)
                 .contact("contact")
                 .dueDate(LocalDate.now())
                 .startingDate(LocalDate.now())
