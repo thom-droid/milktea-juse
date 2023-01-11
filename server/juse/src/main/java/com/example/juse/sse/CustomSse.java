@@ -58,6 +58,8 @@ public class CustomSse<T> {
         try {
             sseEmitter.send(SseEmitter.event().id(emitterId).data(data));
             log.info("sending data: {} ", data);
+            log.info("notification information - emitterId : {}, data : {} ", emitterId, data);
+
         } catch (IOException e) {
             log.debug("event push failed. info : {} / " + "error message : {}", emitterId, e.getMessage());
             sseRepository.deleteEmitterById(emitterId);

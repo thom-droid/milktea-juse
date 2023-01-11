@@ -1,5 +1,6 @@
 package com.example.juse.notification.service;
 
+import com.example.juse.notification.dto.NotificationResponseDto;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.sse.CustomSse;
@@ -25,7 +26,8 @@ public class NotificationService {
         String userUUID = notification.getReceiver().getUuid();
 
         for (Map.Entry<String, SseEmitter> entry : customSse.getEmittersByUserUUID(userUUID).entrySet()) {
-            SseSource data = new SseSource(userUUID, savedNotification, entry.getValue());
+            NotificationResponseDto responseDto = new NotificationResponseDto(savedNotification);
+            SseSource data = new SseSource(userUUID, responseDto, entry.getValue());
             customSse.saveEventCache(entry.getKey(), savedNotification);
             customSse.send(data);
         }
