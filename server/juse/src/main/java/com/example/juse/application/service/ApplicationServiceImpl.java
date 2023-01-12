@@ -61,9 +61,6 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         Board board = boardService.verifyBoardById(findApply.getBoard().getId());
 
-        System.out.println("board = " + board.toString());
-        System.out.println("findApply = " + findApply.getPosition());
-
         findApply.checkApplicationWriter(userId);
         checkPositionAvailability(board, findApply.getPosition());
         findApply.setAccepted(true);
@@ -89,11 +86,14 @@ public class ApplicationServiceImpl implements ApplicationService{
                 break;
         }
 
-        System.out.println("board.toString = " + board.toString());
-
         boardRepository.save(board);
 
-        return applicationRepository.save(findApply);
+        Application application = applicationRepository.save(findApply);
+        Notification notification = Notification.of(Notification.Type.APPLICATION_ACCEPT, findApply.getUser(), board.getUrl());
+
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
+
+        return application;
     }
 
     @Override

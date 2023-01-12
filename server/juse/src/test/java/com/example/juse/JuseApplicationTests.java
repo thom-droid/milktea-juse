@@ -23,4 +23,10 @@ public class JuseApplicationTests {
         accessToken = token.getAccessToken();
 
     }
+
+    public void setTokenAsBoardWriter() {
+
+        TokenDto token = jwtTokenProvider.generateToken("test1@gmail.com", "ROLE_MEMBER");
+        accessToken = token.getAccessToken();
+    }
 }
