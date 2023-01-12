@@ -25,9 +25,6 @@ public class Application extends Auditing {
     @Column(nullable = false)
     private String position;
 
-    @Setter
-    private boolean isAccepted;
-
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
     private Board board;
@@ -35,6 +32,26 @@ public class Application extends Auditing {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    @Setter
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ON_WAIT;
+
+    @Getter
+    public enum Status {
+
+        ON_WAIT("지원 후 대기 중"),
+        ACCEPTED("수락됨"),
+        DENIED("지원 거절됨");
+
+        private final String description;
+
+        Status(String description) {
+            this.description = description;
+        }
+
+    }
 
     public void checkApplicationWriter(long userId) {
         if (this.getBoard().getUser().getId() != userId) {
