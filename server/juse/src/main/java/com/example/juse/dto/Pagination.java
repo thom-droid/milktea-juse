@@ -28,4 +28,8 @@ public class Pagination {
                 .filterOptions(filterOptions)
                 .build();
     }
+
+    public static Pagination of(Page page) {
+        return of(page, null);
+    }
 }

@@ -2,20 +2,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Index Page 입니다.</title>
+    <title>notification test</title>
 </head>
 <body>
 <h1>Index 페이지 입니다.</h1>
-{{#username}}
-<h1>{{username}} 사용자입니다.</h1>
-<a href="/user">유저</a>
-<a href="/logout">로그아웃</a>
-{{/username}}
-{{^username}}
-<h3>로그인되지 않았습니다.</h3>
-<a href="/login">로그인 페이지로 이동</a>
-<a href="/join">회원가입 페이지로 이동</a>
-{{/username}}
-<img src="resource/image/youngmin.jpg">
+<div>
+    <form action="/notification-test/login" method="post">
+        <input name="email">
+        <button type="submit">login</button>
+    </form>
+</div>
 </body>
 </html>

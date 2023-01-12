@@ -5,9 +5,12 @@ import com.example.juse.application.repository.ApplicationRepository;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.board.service.BoardService;
+import com.example.juse.event.NotificationEvent;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.notification.entity.Notification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +24,10 @@ public class ApplicationServiceImpl implements ApplicationService{
     private final BoardRepository boardRepository;
     private final BoardService boardService;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     @Override
+    @Transactional
     public Application create(Application mappedObj) {
         long userId = mappedObj.getUser().getId();
 
@@ -34,14 +40,13 @@ public class ApplicationServiceImpl implements ApplicationService{
         checkPositionAvailability(board, position);
         checkDuplicatedByUserIdAndBoardId(userId, boardId);
 
-        Application findApply = findUserIdApplication(userId);
-        System.out.println("findApply.toString() = " + findApply.toString());
+        Notification notification = Notification.of(Notification.Type.NEW_APPLICATION, board.getUser(), board.getUrl());
 
-//        if (findApply.getId() != null && userId == findApply.getUser().getId()) {
-//            throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
-//        }
+        Application application = applicationRepository.save(mappedObj);
 
-        return applicationRepository.save(mappedObj);
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
+
+        return application;
     }
 
     @Override
@@ -56,12 +61,10 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         Board board = boardService.verifyBoardById(findApply.getBoard().getId());
 
-        System.out.println("board = " + board.toString());
-        System.out.println("findApply = " + findApply.getPosition());
-
         findApply.checkApplicationWriter(userId);
         checkPositionAvailability(board, findApply.getPosition());
-        findApply.setAccepted(true);
+//        findApply.setAccepted(true);
+        findApply.setStatus(Application.Status.ACCEPTED);
 
         // 수락을 눌렀을 때, 지원자의 각 포지션 카운트 증가 후 Board 테이블에 저장.
         int curBack = board.getCurBackend();
@@ -84,34 +87,41 @@ public class ApplicationServiceImpl implements ApplicationService{
                 break;
         }
 
-        System.out.println("board.toString = " + board.toString());
-
         boardRepository.save(board);
 
-        return applicationRepository.save(findApply);
+        Application application = applicationRepository.save(findApply);
+        Notification notification = Notification.of(Notification.Type.APPLICATION_ACCEPT, findApply.getUser(), board.getUrl());
+
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
+
+        return application;
     }
 
     @Override
     @Transactional
     public void deny(long applicationId, long userId) {
         Application findApply = findVerifiedApplication(applicationId);
-        Board board = boardService.verifyBoardById(findApply.getBoard().getId());
         findApply.checkApplicationWriter(userId);
 
         // 거절을 눌렀을 때, 지원자의 각 포지션 카운트 감소 후 Board 테이블에 저장.
-        int curBack = board.getCurBackend();
-        int curFront = board.getCurFrontend();
-        int curDesign = board.getCurDesigner();
-        int curEtc = board.getCurEtc();
+//        int curBack = board.getCurBackend();
+//        int curFront = board.getCurFrontend();
+//        int curDesign = board.getCurDesigner();
+//        int curEtc = board.getCurEtc();
+//
+//        if (findApply.getPosition().equals("backend") && curBack > 0) board.setCurBackend(--curBack);
+//        else if(findApply.getPosition().equals("frontend") && curFront > 0) board.setCurFrontend(--curFront);
+//        else if(findApply.getPosition().equals("designer") && curDesign > 0) board.setCurDesigner(--curDesign);
+//        else if(findApply.getPosition().equals("etc") && curEtc > 0) board.setCurEtc(--curEtc);
 
-        if (findApply.getPosition().equals("backend") && curBack > 0) board.setCurBackend(--curBack);
-        else if(findApply.getPosition().equals("frontend") && curFront > 0) board.setCurFrontend(--curFront);
-        else if(findApply.getPosition().equals("designer") && curDesign > 0) board.setCurDesigner(--curDesign);
-        else if(findApply.getPosition().equals("etc") && curEtc > 0) board.setCurEtc(--curEtc);
+//        boardRepository.save(board);
 
-        System.out.println("board.toString = " + board.toString());
-        boardRepository.save(board);
-        applicationRepository.deleteById(applicationId);
+        findApply.setStatus(Application.Status.DENIED);
+        applicationRepository.save(findApply);
+
+        Notification notification = Notification.of(Notification.Type.APPLICATION_DENIED, findApply.getUser(), findApply.getBoard().getUrl());
+
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
 
     }
 

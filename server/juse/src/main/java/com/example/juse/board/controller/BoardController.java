@@ -4,12 +4,14 @@ import com.example.juse.board.dto.BoardRequestDto;
 import com.example.juse.board.dto.BoardResponseDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.mapper.BoardMapper;
+import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.board.service.BoardService;
 import com.example.juse.dto.MultiResponseDto;
 import com.example.juse.dto.Pagination;
 import com.example.juse.dto.SingleResponseDto;
 import com.example.juse.exception.validator.NotEmptyToken;
 import com.example.juse.helper.filterings.FilterOptions;
+import com.example.juse.helper.resolver.uri.RequestURL;
 import com.example.juse.security.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,17 +34,20 @@ import java.util.stream.Collectors;
 @RestController
 public class BoardController {
 
+    private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final BoardMapper boardMapper;
 
     @PostMapping
     public ResponseEntity<SingleResponseDto<BoardResponseDto.Single>> post(
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
-            @RequestBody @Valid BoardRequestDto.Post postDto
+            @RequestBody @Valid BoardRequestDto.Post postDto,
+            @RequestURL String requestURL
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         postDto.setUserId(userId);
         Board mappedObj = boardMapper.toEntityFrom(postDto);
+        mappedObj.setUrl(requestURL);
         Board createdEntity = boardService.create(mappedObj);
         BoardResponseDto.Single responseDto = boardMapper.toSingleResponseDto(createdEntity);
 
@@ -124,10 +129,6 @@ public class BoardController {
             @RequestParam(name = "status", required = false) Board.Status status,
             @RequestParam(name = "page", required = true, defaultValue = "1") int page
     ) {
-        System.out.println("type : " + type);
-        System.out.println("tag : " + tag);
-        System.out.println("period : " + period);
-        System.out.println("status : " + status);
 
         Pageable pageable = PageRequest.of(page - 1, 6);
 
@@ -164,4 +165,13 @@ public class BoardController {
         return new ResponseEntity<>(new MultiResponseDto<>(data, pagination), HttpStatus.OK);
 
     }
+
+    @GetMapping("/test")
+    public List<BoardResponseDto.Multi> getAllBoardForTest() {
+        List<Board> all = boardRepository.findAll();
+        List<BoardResponseDto.Multi> list = boardMapper.toListDtoFromListEntities(all);
+        return list;
+    }
+
+
 }

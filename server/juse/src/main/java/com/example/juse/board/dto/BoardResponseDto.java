@@ -59,6 +59,7 @@ public class BoardResponseDto {
 
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+        private String url;
     }
 
     @Getter

@@ -2,20 +2,23 @@ package com.example.juse.question.service;
 
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.service.BoardService;
+import com.example.juse.event.NotificationEvent;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.notification.entity.Notification;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.mapper.QuestionMapper;
 import com.example.juse.question.repository.QuestionRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
+@Slf4j
 @Profile("plain")
 @RequiredArgsConstructor
 @Service
@@ -25,6 +28,9 @@ public class QuestionServiceImpl implements QuestionService{
     private final UserService userService;
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
+
+    private final ApplicationEventPublisher eventPublisher;
+
 
     @Override
     @Transactional
@@ -38,7 +44,15 @@ public class QuestionServiceImpl implements QuestionService{
         post.addBoard(board);
         post.addUser(user);
 
-        return questionRepository.save(post);
+        Notification notification = Notification.of(Notification.Type.NEW_REPLY, board.getUser(), board.getUrl());
+
+        log.info("question saved. the event is ready to be sent");
+
+        Question savedQuestion = questionRepository.save(post);
+
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
+
+        return savedQuestion;
     }
 
     @Override
