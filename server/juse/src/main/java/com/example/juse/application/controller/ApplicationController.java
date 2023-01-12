@@ -21,7 +21,6 @@ import javax.validation.constraints.Positive;
 
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/applications")
 @RestController
 public class ApplicationController {
 
@@ -29,7 +28,7 @@ public class ApplicationController {
     private final ApplicationMapper applicationMapper;
     private final UserService userService;
 
-    @PostMapping("/{board-id}")
+    @PostMapping("/apply/board/{board-id}")
     public ResponseEntity<SingleResponseDto<ApplicationResponseDto>> post(
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
             @PathVariable("board-id") @Positive long boardId,
@@ -53,7 +52,7 @@ public class ApplicationController {
     }
 
 
-    @PatchMapping("/{application-id}")
+    @PatchMapping("/accept/application/{application-id}")
     public ResponseEntity<SingleResponseDto<ApplicationResponseDto>> accept(
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
             @PathVariable("application-id") @Positive long applicationId
@@ -65,8 +64,8 @@ public class ApplicationController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{application-id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/deny/application/{application-id}")
     public void deny(
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
             @PathVariable("application-id") @Positive long applicationId

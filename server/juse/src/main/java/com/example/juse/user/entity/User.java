@@ -16,7 +16,6 @@ import net.minidev.json.annotate.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -105,11 +104,11 @@ public class User extends Auditing {
     }
 
     public List<Board> getMyParticipationList() {
-        return this.applicationList.stream().filter(Application::isAccepted).map(Application::getBoard).collect(Collectors.toList());
+        return this.applicationList.stream().filter(application -> application.getStatus() == Application.Status.ACCEPTED).map(Application::getBoard).collect(Collectors.toList());
     }
 
     public List<Board> getMyApplicationList() {
-        return this.applicationList.stream().filter(application -> !application.isAccepted()).map(Application::getBoard).collect(Collectors.toList());
+        return this.applicationList.stream().filter(application -> application.getStatus() != Application.Status.ACCEPTED).map(Application::getBoard).collect(Collectors.toList());
     }
 
     public List<String> getSkillStackTags() {

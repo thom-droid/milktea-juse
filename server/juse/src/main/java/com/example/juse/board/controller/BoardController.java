@@ -129,10 +129,6 @@ public class BoardController {
             @RequestParam(name = "status", required = false) Board.Status status,
             @RequestParam(name = "page", required = true, defaultValue = "1") int page
     ) {
-        System.out.println("type : " + type);
-        System.out.println("tag : " + tag);
-        System.out.println("period : " + period);
-        System.out.println("status : " + status);
 
         Pageable pageable = PageRequest.of(page - 1, 6);
 

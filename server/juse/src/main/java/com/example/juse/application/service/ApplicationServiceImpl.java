@@ -63,7 +63,8 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         findApply.checkApplicationWriter(userId);
         checkPositionAvailability(board, findApply.getPosition());
-        findApply.setAccepted(true);
+//        findApply.setAccepted(true);
+        findApply.setStatus(Application.Status.ACCEPTED);
 
         // 수락을 눌렀을 때, 지원자의 각 포지션 카운트 증가 후 Board 테이블에 저장.
         int curBack = board.getCurBackend();
@@ -100,23 +101,27 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Transactional
     public void deny(long applicationId, long userId) {
         Application findApply = findVerifiedApplication(applicationId);
-        Board board = boardService.verifyBoardById(findApply.getBoard().getId());
         findApply.checkApplicationWriter(userId);
 
         // 거절을 눌렀을 때, 지원자의 각 포지션 카운트 감소 후 Board 테이블에 저장.
-        int curBack = board.getCurBackend();
-        int curFront = board.getCurFrontend();
-        int curDesign = board.getCurDesigner();
-        int curEtc = board.getCurEtc();
+//        int curBack = board.getCurBackend();
+//        int curFront = board.getCurFrontend();
+//        int curDesign = board.getCurDesigner();
+//        int curEtc = board.getCurEtc();
+//
+//        if (findApply.getPosition().equals("backend") && curBack > 0) board.setCurBackend(--curBack);
+//        else if(findApply.getPosition().equals("frontend") && curFront > 0) board.setCurFrontend(--curFront);
+//        else if(findApply.getPosition().equals("designer") && curDesign > 0) board.setCurDesigner(--curDesign);
+//        else if(findApply.getPosition().equals("etc") && curEtc > 0) board.setCurEtc(--curEtc);
 
-        if (findApply.getPosition().equals("backend") && curBack > 0) board.setCurBackend(--curBack);
-        else if(findApply.getPosition().equals("frontend") && curFront > 0) board.setCurFrontend(--curFront);
-        else if(findApply.getPosition().equals("designer") && curDesign > 0) board.setCurDesigner(--curDesign);
-        else if(findApply.getPosition().equals("etc") && curEtc > 0) board.setCurEtc(--curEtc);
+//        boardRepository.save(board);
 
-        System.out.println("board.toString = " + board.toString());
-        boardRepository.save(board);
-        applicationRepository.deleteById(applicationId);
+        findApply.setStatus(Application.Status.DENIED);
+        applicationRepository.save(findApply);
+
+        Notification notification = Notification.of(Notification.Type.APPLICATION_DENIED, findApply.getUser(), findApply.getBoard().getUrl());
+
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
 
     }
 

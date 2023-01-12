@@ -10,6 +10,7 @@ import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;
 import com.google.gson.Gson;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -44,7 +45,15 @@ class ApplicationControllerTest extends JuseApplicationTests {
     @Autowired
     Gson gson;
 
-    private final String requestMappingUrl = "http://localhost:8080/applications";
+
+    private final String requestMappingUrl = "http://localhost:8080";
+
+    @AfterEach
+    public void destroy() {
+        applicationRepository.deleteAll();
+        notificationRepository.deleteAll();
+
+    }
 
     @Test
     void givenApplicationRequestDto_whenPosted_thenApplicationAndNotificationIsCreated() throws Exception {
@@ -56,7 +65,7 @@ class ApplicationControllerTest extends JuseApplicationTests {
         ResultActions resultActions =
                 mockMvc
                         .perform(
-                                post(requestMappingUrl + "/" + boardId)
+                                post(requestMappingUrl + "/apply/board/" + boardId)
                                         .header("Auth", accessToken)
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .param("position", position)
@@ -93,7 +102,7 @@ class ApplicationControllerTest extends JuseApplicationTests {
         ResultActions resultActions = mockMvc
                 .perform(
                         patch(
-                                requestMappingUrl + "/" + applicationId)
+                                requestMappingUrl + "/accept/application/" + applicationId)
                                 .header("Auth", accessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                 );
@@ -102,11 +111,50 @@ class ApplicationControllerTest extends JuseApplicationTests {
         resultActions.andExpect(status().isOk());
 
         Application updated = applicationRepository.findById(applicationId).orElseThrow();
-        
+
         Notification notification = notificationRepository.findAll().get(0);
 
-        assertTrue(updated.isAccepted());
+        assertEquals(updated.getStatus(), Application.Status.ACCEPTED);
         assertEquals(Notification.Type.APPLICATION_ACCEPT, notification.getType());
+        assertEquals(user.getId(), notification.getReceiver().getId());
+        assertEquals(board.getUrl(), notification.getRelatedURL());
+
+    }
+
+    @Test
+    void givenApplicationId_whenDeny_thenDoesStatusUpdatedAndNotificationIsSent() throws Exception {
+        //given
+        setTokenAsBoardWriter();
+
+        Board board = boardRepository.findById(1L).orElseThrow();
+        User user = userRepository.findByEmail("test2@gmail.com");
+        Application application = Application.builder()
+                .board(board)
+                .user(user)
+                .position("backend")
+                .build();
+
+        Application savedApplication = applicationRepository.save(application);
+        long applicationId = savedApplication.getId();
+
+        //when
+        ResultActions resultActions = mockMvc
+                .perform(
+                        patch(
+                                requestMappingUrl + "/deny/application/" + applicationId)
+                                .header("Auth", accessToken)
+                                .contentType(MediaType.APPLICATION_JSON)
+                );
+
+        //then
+        resultActions.andExpect(status().isOk());
+
+        Application updated = applicationRepository.findById(applicationId).orElseThrow();
+
+        Notification notification = notificationRepository.findAll().get(0);
+
+        assertEquals(updated.getStatus(), Application.Status.DENIED);
+        assertEquals(Notification.Type.APPLICATION_DENIED, notification.getType());
         assertEquals(user.getId(), notification.getReceiver().getId());
         assertEquals(board.getUrl(), notification.getRelatedURL());
 
