@@ -9,10 +9,8 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -21,11 +19,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
 @AutoConfigureMockMvc
 class BoardControllerTest extends JuseApplicationTests {
 
@@ -46,6 +41,7 @@ class BoardControllerTest extends JuseApplicationTests {
     @Test
     void givenRequestDto_whenPostRequest_thenRequestURLReturned() throws Exception {
 
+        //given
         BoardRequestDto.Post postDto = BoardRequestDto.Post.builder()
                 .title("board1")
                 .content("board1")
@@ -61,6 +57,7 @@ class BoardControllerTest extends JuseApplicationTests {
 
         String request = objectMapper.writeValueAsString(postDto);
 
+        //when
         ResultActions resultActions = mockMvc
                 .perform(post("/boards")
                         .content(request)
@@ -69,10 +66,10 @@ class BoardControllerTest extends JuseApplicationTests {
                         .header("Auth", accessToken)
                 );
 
-        resultActions.andExpect(status().isCreated()).andDo(print());
-
-        String expectedUrl = resultActions.andReturn().getRequest().getRequestURL() + "/2";
-
+        //then
+        resultActions.andExpect(status().isCreated());
+        int size = boardRepository.findAll().size();
+        String expectedUrl = resultActions.andReturn().getRequest().getRequestURL().append("/").append(size).toString();
         resultActions.andExpect(jsonPath("$.data.url").value(expectedUrl));
 
     }
