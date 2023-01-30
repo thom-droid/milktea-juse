@@ -104,7 +104,7 @@ public class StubService {
                 .contact("contact")
                 .dueDate(LocalDate.now())
                 .startingDate(LocalDate.of(2022, 10, 5))
-                .period("3")
+                .periods("3")
                 .onOffline("online")
                 .status(Board.Status.OPENING)
                 .type(Board.Type.PROJECT)
@@ -258,7 +258,7 @@ public class StubService {
                                                         .id(2L)
                                                         .title("board2")
                                                         .dueDate(LocalDate.of(2022, 10, 15))
-                                                        .period("6")
+                                                        .periods("6")
                                                         .user(
                                                                 User.builder()
                                                                         .id(1L)
@@ -282,7 +282,7 @@ public class StubService {
                                                         .views(15)
                                                         .type(Board.Type.PROJECT)
                                                         .dueDate(LocalDate.of(2022, 10, 19))
-                                                        .period("6")
+                                                        .periods("6")
                                                         .user(
                                                                 User.builder()
                                                                         .id(5L)
@@ -300,7 +300,7 @@ public class StubService {
                                                         .views(24)
                                                         .type(Board.Type.STUDY)
                                                         .dueDate(LocalDate.of(2022, 11, 25))
-                                                        .period("long")
+                                                        .periods("long")
                                                         .user(
                                                                 User.builder()
                                                                         .id(5L)
