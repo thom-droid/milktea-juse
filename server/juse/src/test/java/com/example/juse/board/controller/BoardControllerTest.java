@@ -49,7 +49,7 @@ class BoardControllerTest extends JuseApplicationTests {
                 .contact("online")
                 .dueDate(LocalDate.of(2023, 1, 2))
                 .startingDate(LocalDate.of(2023, 1, 3))
-                .period("6")
+                .periods("6")
                 .onOffline("online")
                 .type(Board.Type.PROJECT)
                 .tagList(List.of("java"))

@@ -10,7 +10,7 @@ import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;
 import com.google.gson.Gson;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -48,7 +48,7 @@ class ApplicationControllerTest extends JuseApplicationTests {
 
     private final String requestMappingUrl = "http://localhost:8080";
 
-    @AfterEach
+    @BeforeEach
     public void destroy() {
         applicationRepository.deleteAll();
         notificationRepository.deleteAll();
@@ -112,6 +112,7 @@ class ApplicationControllerTest extends JuseApplicationTests {
 
         Application updated = applicationRepository.findById(applicationId).orElseThrow();
 
+        Thread.sleep(3000);
         Notification notification = notificationRepository.findAll().get(0);
 
         assertEquals(updated.getStatus(), Application.Status.ACCEPTED);
