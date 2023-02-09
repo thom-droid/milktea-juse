@@ -1,7 +1,6 @@
 package com.example.juse.question.controller;
 
 import com.example.juse.JuseApplicationTests;
-import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.notification.service.NotificationService;
 import com.example.juse.question.dto.QuestionRequestDto;
@@ -10,19 +9,16 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.plugins.MockMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
@@ -70,8 +66,9 @@ class QuestionControllerTest extends JuseApplicationTests {
 
         //then
         resultActions.andExpect(status().isCreated());
-//        verify(notificationService).send(Mockito.any(Notification.class));
 
+        Thread.sleep(3000);
         assertEquals(1, notificationRepository.findAll().size());
+
     }
 }

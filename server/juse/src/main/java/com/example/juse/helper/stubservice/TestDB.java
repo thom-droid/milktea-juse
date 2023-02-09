@@ -86,20 +86,73 @@ public class TestDB {
                 .user(user)
                 .title("test1")
                 .content("test1")
-                .url("http://localhost:8080/board/1")
+                .url("http://localhost:8080/boards/1")
                 .people(5)
                 .backend(3)
                 .contact("contact")
                 .dueDate(LocalDate.now())
                 .startingDate(LocalDate.now())
-                .period("6")
+                .periods("6")
+                .onOffline("online")
+                .build();
+
+        Board board2 = Board.builder()
+                .type(Board.Type.PROJECT)
+                .user(user)
+                .title("test2")
+                .content("test2")
+                .url("http://localhost:8080/boards/2")
+                .people(5)
+                .backend(3)
+                .contact("contact")
+                .dueDate(LocalDate.now())
+                .startingDate(LocalDate.now())
+                .periods("6")
+                .onOffline("online")
+                .build();
+
+        Board board3 = Board.builder()
+                .type(Board.Type.PROJECT)
+                .user(user)
+                .title("test3")
+                .content("test3")
+                .url("http://localhost:8080/boards/3")
+                .people(5)
+                .backend(3)
+                .contact("contact")
+                .dueDate(LocalDate.of(2023, 1, 13))
+                .startingDate(LocalDate.now())
+                .periods("6")
+                .onOffline("online")
+                .build();
+
+        Board board4 = Board.builder()
+                .type(Board.Type.PROJECT)
+                .user(user)
+                .title("test4")
+                .content("test4")
+                .url("http://localhost:8080/boards/4")
+                .people(5)
+                .backend(3)
+                .contact("contact")
+                .dueDate(LocalDate.of(2023, 1, 14))
+                .startingDate(LocalDate.now())
+                .periods("6")
                 .onOffline("online")
                 .build();
 
         BoardTag boardTag1 = BoardTag.of(board, tag);
+        BoardTag boardTag2 = BoardTag.of(board2, tag2);
+        BoardTag boardTag3 = BoardTag.of(board3, tag3);
+        BoardTag boardTag4 = BoardTag.of(board4, tag);
         board.getBoardTagList().add(boardTag1);
+        board2.getBoardTagList().add(boardTag1);
+        board3.getBoardTagList().add(boardTag2);
+        board4.getBoardTagList().add(boardTag3);
+        board4.getBoardTagList().add(boardTag4);
 
-        boardRepository.save(board);
+
+        boardRepository.saveAll(List.of(board, board2, board3, board4));
 
         String token1 = jwtTokenProvider.generateToken(data.getEmail(), "ROLE_MEMBER").getAccessToken();
         String token2 = jwtTokenProvider.generateToken(data2.getEmail(), "ROLE_MEMBER").getAccessToken();

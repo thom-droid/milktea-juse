@@ -33,7 +33,7 @@ public class BoardRequestDto {
         private LocalDate startingDate;
 
         @NotBlank
-        private String period;
+        private String periods;
         private String onOffline;
 
         @NotNull

@@ -6,6 +6,7 @@ import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.sse.CustomSse;
 import com.example.juse.sse.SseSource;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class NotificationService {
@@ -23,6 +25,7 @@ public class NotificationService {
 
     public void send(Notification notification) {
         Notification savedNotification = save(notification);
+        log.info("notification saved. : {} ", savedNotification);
         String userUUID = notification.getReceiver().getUuid();
 
         for (Map.Entry<String, SseEmitter> entry : customSse.getEmittersByUserUUID(userUUID).entrySet()) {

@@ -60,7 +60,7 @@ public class Board extends Auditing {
     private LocalDate startingDate;
 
     @Column(nullable = false)
-    private String period;
+    private String periods;
 
     @Column(nullable = false)
     private String onOffline;

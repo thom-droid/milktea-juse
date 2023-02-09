@@ -40,7 +40,7 @@ public interface BoardMapper {
     @Mapping(target = "contact", source = "contact")
     @Mapping(target = "dueDate", source = "dueDate")
     @Mapping(target = "startingDate", source = "startingDate")
-    @Mapping(target = "period", source = "period")
+    @Mapping(target = "periods", source = "periods")
     @Mapping(target = "onOffline", source = "onOffline")
     @Mapping(target = "status", source = "status")
     void updateEntityFromSource(@MappingTarget Board entity, Board source);
