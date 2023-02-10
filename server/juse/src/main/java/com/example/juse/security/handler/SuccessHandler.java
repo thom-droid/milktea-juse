@@ -1,5 +1,7 @@
 package com.example.juse.security.handler;
 
+import com.example.juse.helper.utils.UriUtils;
+import com.example.juse.security.config.OAuthProperties;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
 import com.example.juse.security.oauth.PrincipalDetails;
@@ -7,11 +9,7 @@ import com.example.juse.social.entity.SocialUser;
 import com.example.juse.social.repository.SocialUserRepository;
 import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -28,10 +26,9 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
 
 
     private final JwtTokenProvider jwtTokenProvider;
-
     private final SocialUserRepository socialUserRepository;
-
     private final UserRepository userRepository;
+    private final OAuthProperties oAuthProperties;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -75,16 +72,13 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
 
         System.out.println("############### = " + request.getRequestURL());
 
-        // 최초 로그인 시 추가 회원가입하기 위해 이동.
-        if (userRepository.findByEmail(socialUser.getEmail()) == null) {
-            response.sendRedirect("http://localhost:3000/oauth2/redirect?isUser=0&token=" + tokenDto.getAccessToken());
-//            response.sendRedirect("https://junior-to-senior.netlify.app/oauth2/redirect?isUser=0&token=" + tokenDto.getAccessToken());
+        String redirectUrl = oAuthProperties.getRedirectUrl();
+        String token = tokenDto.getAccessToken();
+        boolean isSocialUserNull = socialUser.getEmail() == null;
+        String redirectUri = UriUtils.getRedirectUriAfterOAuthAuthorized(redirectUrl, token, isSocialUserNull);
 
-        }
-        else {
-            response.sendRedirect("http://localhost:3000/oauth2/redirect?isUser=1&token=" + tokenDto.getAccessToken());
-//            response.sendRedirect("https://junior-to-senior.netlify.app/oauth2/redirect?isUser=1&token=" + tokenDto.getAccessToken());
-        }
+        // 최초 로그인 시 추가 회원가입하기 위해 이동.
+        response.sendRedirect(redirectUri);
     }
 
     public SocialUser findByEmailGithub(String email) {

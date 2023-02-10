@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@ActiveProfiles({"testonly", "plain", "oauth"})
+@ActiveProfiles({"local"})
 @AutoConfigureMockMvc
 @SpringBootTest
 class NotificationControllerTest {
