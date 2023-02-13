@@ -67,7 +67,7 @@ class QuestionControllerTest extends JuseApplicationTests {
         //then
         resultActions.andExpect(status().isCreated());
 
-        Thread.sleep(3000);
+        Thread.sleep(5000);
         assertEquals(1, notificationRepository.findAll().size());
 
     }

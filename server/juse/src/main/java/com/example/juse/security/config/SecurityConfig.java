@@ -5,7 +5,8 @@ import com.example.juse.security.jwt.JwtAuthFilter;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.oauth.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,15 +18,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import java.util.List;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private PrincipalOauth2UserService principalOauth2UserService;
+    @Value("${cors.allowed-origin}")
+    private String allowedOrigin;
+
+    private final PrincipalOauth2UserService principalOauth2UserService;
+
     private final SuccessHandler successHandler;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -36,6 +41,7 @@ public class SecurityConfig {
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.headers().frameOptions().disable();
 
         http.authorizeRequests()
@@ -56,16 +62,20 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-//        configuration.addAllowedOrigin("*");
-//        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(List.of(allowedOrigin));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
+        log.info("allowed-origin : {} ", configuration.getAllowedOrigins());
+        log.info("allowed-method : {} ", configuration.getAllowedMethods());
+        log.info("allowed-headers : {} ", configuration.getAllowedHeaders());
+        log.info("credential allowed : {} ", configuration.getAllowCredentials());
+
         return source;
     }
+
 }

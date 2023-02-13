@@ -86,7 +86,7 @@ const TechStack = ({ selected, setSelected }) => {
 								: ''
 						}
 					>
-						<Stack src={`/icons/stacks/${el}.png`} alt={el} />
+						<Stack src={`/icons/stacks/${el.toLowerCase()}.png`} alt={el} />
 						<span>{el}</span>
 					</StackBubble>
 				))}
