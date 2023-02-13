@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+export const API_BASE_URL  = process.env.REACT_APP_API_ROOT;
+
 export const apis = {
   // 회원가입
   postJoin: async (token, data, img) => {
@@ -10,7 +12,7 @@ export const apis = {
     );
     formData.append('profileImg', img);
     await axios
-      .post(`https://jusemain.duckdns.org:8080/users/join`, formData, {
+      .post(`${API_BASE_URL}/users/join`, formData, {
         headers: {
           Auth: token,
         },
@@ -20,7 +22,7 @@ export const apis = {
   },
   getNickname: async (nickname) => {
     return await axios
-      .get(`https://jusemain.duckdns.org:8080/users/nicknames?q=${nickname}`)
+      .get(`${API_BASE_URL}/users/nicknames?q=${nickname}`)
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
@@ -28,7 +30,7 @@ export const apis = {
   // 마이페이지
   getUsers: async (token) => {
     return await axios
-      .get(`https://jusemain.duckdns.org:8080/users`, {
+      .get(`${API_BASE_URL}/users`, {
         headers: {
           Auth: token,
         },
@@ -38,7 +40,7 @@ export const apis = {
   },
   getOtherUsers: async (token, userId) => {
     return await axios
-      .get(`https://jusemain.duckdns.org:8080/users/${userId}`, {
+      .get(`${API_BASE_URL}/users/${userId}`, {
         headers: {
           Auth: token,
         },
@@ -48,7 +50,7 @@ export const apis = {
   },
   deleteUser: async (token) => {
     await axios
-      .delete(`https://jusemain.duckdns.org:8080/users`, {
+      .delete(`${API_BASE_URL}/users`, {
         headers: {
           Auth: token,
         },
@@ -68,7 +70,7 @@ export const apis = {
     );
     formData.append('profileImg', img);
     await axios
-      .patch(`https://jusemain.duckdns.org:8080/users`, formData, {
+      .patch(`${API_BASE_URL}/users`, formData, {
         headers: {
           Auth: token,
         },
@@ -80,7 +82,7 @@ export const apis = {
   // 게시물 상세
   getBoardDetail: async (token, boardId) => {
     return await axios
-      .get(`https://jusemain.duckdns.org:8080/boards/${boardId}`, {
+      .get(`${API_BASE_URL}/boards/${boardId}`, {
         headers: {
           Auth: token,
         },
@@ -92,7 +94,7 @@ export const apis = {
   // 질문 게시 수정 삭제
   postQuestion: async (token, data, boardId) => {
     await axios
-      .post(`https://jusemain.duckdns.org:8080/questions/${boardId}`, data, {
+      .post(`${API_BASE_URL}/questions/${boardId}`, data, {
         headers: {
           Auth: token,
         },
@@ -102,7 +104,7 @@ export const apis = {
   patchQuestion: async (token, data, questionId) => {
     await axios
       .patch(
-        `https://jusemain.duckdns.org:8080/questions/${questionId}`,
+        `${API_BASE_URL}/questions/${questionId}`,
         data,
         {
           headers: {
@@ -114,7 +116,7 @@ export const apis = {
   },
   deleteQuestion: async (token, questionId) => {
     await axios
-      .delete(`https://jusemain.duckdns.org:8080/questions/${questionId}`, {
+      .delete(`${API_BASE_URL}/questions/${questionId}`, {
         headers: {
           Auth: token,
         },
@@ -125,7 +127,7 @@ export const apis = {
   // 답변 게시 수정 삭제
   postAnswer: async (token, data, questionId) => {
     await axios
-      .post(`https://jusemain.duckdns.org:8080/answers/${questionId}`, data, {
+      .post(`${API_BASE_URL}/answers/${questionId}`, data, {
         headers: {
           Auth: token,
         },
@@ -134,7 +136,7 @@ export const apis = {
   },
   patchAnswer: async (token, data, answerId) => {
     await axios
-      .patch(`https://jusemain.duckdns.org:8080/answers/${answerId}`, data, {
+      .patch(`${API_BASE_URL}/answers/${answerId}`, data, {
         headers: {
           Auth: token,
         },
@@ -143,7 +145,7 @@ export const apis = {
   },
   deleteAnswer: async (token, answerId) => {
     await axios
-      .delete(`https://jusemain.duckdns.org:8080/answers/${answerId}`, {
+      .delete(`${API_BASE_URL}/answers/${answerId}`, {
         headers: {
           Auth: token,
         },
@@ -154,7 +156,7 @@ export const apis = {
   // 마이주씨
   getMyjuse: async (token) => {
     return await axios
-      .get(`https://jusemain.duckdns.org:8080/users/myjuse`, {
+      .get(`${API_BASE_URL}/users/myjuse`, {
         headers: {
           Auth: token,
         },
@@ -166,7 +168,7 @@ export const apis = {
   // 게시물 작성
   postBoard: async (token, data) => {
     await axios
-      .post(`https://jusemain.duckdns.org:8080/boards`, data, {
+      .post(`${API_BASE_URL}/boards`, data, {
         headers: {
           Auth: token,
         },
@@ -178,7 +180,7 @@ export const apis = {
   // 게시물 수정
   patchBoard: async (token, data, boardId) => {
     await axios
-      .patch(`https://jusemain.duckdns.org:8080/boards/${boardId}`, data, {
+      .patch(`${API_BASE_URL}/boards/${boardId}`, data, {
         headers: {
           Auth: token,
         },
@@ -190,7 +192,7 @@ export const apis = {
   // 게시물 삭제
   deleteBoard: async (token, boardId) => {
     await axios
-      .delete(`https://jusemain.duckdns.org:8080/boards/${boardId}`, {
+      .delete(`${API_BASE_URL}/boards/${boardId}`, {
         headers: {
           Auth: token,
         },
@@ -203,7 +205,7 @@ export const apis = {
   postApply: async (token, boardId, position) => {
     await axios
       .post(
-        `https://jusemain.duckdns.org:8080/applications/${boardId}?position=${position}`,
+        `${API_BASE_URL}/applications/${boardId}?position=${position}`,
         {},
         {
           headers: {
@@ -217,7 +219,7 @@ export const apis = {
   patchAccept: async (token, applicationId) => {
     await axios
       .patch(
-        `https://jusemain.duckdns.org:8080/applications/${applicationId}`,
+        `${API_BASE_URL}/applications/${applicationId}`,
         {},
         {
           headers: {
@@ -231,7 +233,7 @@ export const apis = {
   deleteDeny: async (token, applicationId) => {
     await axios
       .delete(
-        `https://jusemain.duckdns.org:8080/applications/${applicationId}`,
+        `${API_BASE_URL}/applications/${applicationId}`,
         {
           headers: {
             Auth: token,
@@ -245,7 +247,7 @@ export const apis = {
   // 북마크 등록
   postBookmark: async (token, boardId) => {
     return await axios.post(
-      `https://jusemain.duckdns.org:8080/bookmarks/${boardId}`,
+      `${API_BASE_URL}/bookmarks/${boardId}`,
       {},
       {
         headers: {
@@ -258,7 +260,7 @@ export const apis = {
   // 북마크 삭제
   deleteBookmark: async (token, boardId) => {
     await axios.delete(
-      `https://jusemain.duckdns.org:8080/bookmarks/${boardId}`,
+      `${API_BASE_URL}/bookmarks/${boardId}`,
       {
         headers: {
           Auth: token,
@@ -271,7 +273,7 @@ export const apis = {
   postLike: async (token, id) => {
     await axios
       .post(
-        `https://jusemain.duckdns.org:8080/likes/${id}`,
+        `${API_BASE_URL}/likes/${id}`,
         {},
         {
           headers: {
@@ -285,7 +287,7 @@ export const apis = {
   // 다른 유저 좋아요 삭제
   deleteLike: async (token, id) => {
     await axios
-      .delete(`https://jusemain.duckdns.org:8080/likes/${id}`, {
+      .delete(`${API_BASE_URL}/likes/${id}`, {
         headers: {
           Auth: token,
         },
@@ -296,7 +298,7 @@ export const apis = {
   // 게시물 목록 조회 및 필터링, 무한스크롤
   getBoards: async (token, type, tag, period, status, page) => {
     const res = await axios.get(
-      `https://jusemain.duckdns.org:8080/boards?page=${page}&type=${type.toUpperCase()}${
+      `${API_BASE_URL}/boards?page=${page}&type=${type.toUpperCase()}${
         tag.length ? '&tag=' + tag.join(',') : ''
       }${
         period.length ? '&period=' + period.join(',') : ''
