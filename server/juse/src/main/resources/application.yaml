@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    include: plain
+    group:
+      local:
+        - db-local
+        - oauth-local
+      prod:
+        - db-prod
+        - oauth-prod
+        - config-prod
+      test:
+        - oauth-local
+  config:
+    import: 'file:///Users/thom/Downloads/project/chicken-milktea/test/'
+cors:
+  allowed-origin: 'http://localhost:3000'
+
+#---
+#spring:
+#  config:
+#    import: 'file:///home/ec2-user/app/config/'
+#    activate:
+#      on-profile: prod

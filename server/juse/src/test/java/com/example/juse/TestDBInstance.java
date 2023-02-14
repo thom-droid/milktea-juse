@@ -1,4 +1,4 @@
-package com.example.juse.helper.stubservice;
+package com.example.juse;
 
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
@@ -11,25 +11,34 @@ import com.example.juse.tag.repository.TagRepository;
 import com.example.juse.tag.repository.UserTagRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Profile("testonly")
-@RequiredArgsConstructor
-@Configuration
-public class TestDB {
+@TestConfiguration
+public class TestDBInstance {
+
+    public TestDBInstance(TagRepository tagRepository,
+                          SocialUserRepository socialUserRepository,
+                          UserRepository userRepository,
+                          UserTagRepository userTagRepository,
+                          BoardRepository boardRepository,
+                          JwtTokenProvider jwtTokenProvider) {
+        this.tagRepository = tagRepository;
+        this.socialUserRepository = socialUserRepository;
+        this.userRepository = userRepository;
+        this.userTagRepository = userTagRepository;
+        this.boardRepository = boardRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     private final TagRepository tagRepository;
     private final SocialUserRepository socialUserRepository;
     private final UserRepository userRepository;
     private final UserTagRepository userTagRepository;
     private final BoardRepository boardRepository;
-
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean

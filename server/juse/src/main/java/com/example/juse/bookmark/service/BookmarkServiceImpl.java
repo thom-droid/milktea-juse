@@ -10,11 +10,9 @@ import com.example.juse.exception.ExceptionCode;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile("plain")
 @RequiredArgsConstructor
 @Service
 public class BookmarkServiceImpl implements BookmarkService {

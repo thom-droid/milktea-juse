@@ -21,7 +21,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     String role;
     String name;
 
-    private SocialUserRepository socialUserRepository;
+    private final SocialUserRepository socialUserRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

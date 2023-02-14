@@ -36,15 +36,6 @@ out/
 
 ### VS Code ###
 .vscode/
-application.yaml
-application-dev.yaml
-application-e.yaml
-application-mysql.yaml
-application-db.yaml
 resources/ssl/
-application-oauth.yaml
-application-local.yaml
-application-plain.yaml
-application-testonly.yaml
 client/
 

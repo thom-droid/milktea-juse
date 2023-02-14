@@ -5,12 +5,10 @@ import com.example.juse.like.repository.LikeRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Profile("plain")
 @RequiredArgsConstructor
 @Service
 public class LikeServiceImpl implements LikeService {
@@ -19,9 +17,6 @@ public class LikeServiceImpl implements LikeService {
 
     private final UserRepository userRepository;
 
-    //todo : user1번이 user2번을 또 누르면 어떻게 할것인가?
-    //todo : 하나의 api로 합치는 방법
-    //todo :
     @Override
     public Like create(long whoLikes, long whoIsLiked) {
         User whoLike = userRepository.findById(whoLikes).orElseThrow();
