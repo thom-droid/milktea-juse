@@ -20,7 +20,7 @@ public class OAuthProdProfileTest {
 
         String google = "https://server.chicken-milktea-juse.com/oauth2/authorization/google";
         String github = "https://server.chicken-milktea-juse.com/oauth2/authorization/github";
-        String redirect = "https://chicken-milktea-juse.com/oauth2/redirect";
+        String redirect = "https://chicken-milktea-juse.com/oauth2";
 
         assertEquals(google, oAuthProperties.getGoogleRequestUri());
         assertEquals(github, oAuthProperties.getGithubRequestUri());

@@ -6,6 +6,7 @@ import com.example.juse.notification.service.NotificationService;
 import com.example.juse.question.dto.QuestionRequestDto;
 import com.example.juse.user.repository.UserRepository;
 import com.google.gson.Gson;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -39,6 +40,11 @@ class QuestionControllerTest extends JuseApplicationTests {
 
     @Autowired
     private NotificationRepository notificationRepository;
+
+    @BeforeEach
+    public void destroy() {
+        notificationRepository.deleteAll();
+    }
 
     @Test
     void givenQuestionDto_whenPostInvoked_thenIsNotificationSaveAndSent() throws Exception {

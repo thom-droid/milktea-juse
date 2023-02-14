@@ -23,7 +23,7 @@ public class OAuthLocalProfileTest {
 
         String google = "http://localhost:8080/oauth2/authorization/google";
         String github = "http://localhost:8080/oauth2/authorization/github";
-        String redirect = "http://localhost:3000/oauth2/redirect";
+        String redirect = "http://localhost:3000/oauth2";
 
         assertEquals(google, oAuthProperties.getGoogleRequestUri());
         assertEquals(github, oAuthProperties.getGithubRequestUri());

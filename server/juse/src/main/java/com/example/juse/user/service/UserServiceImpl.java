@@ -10,7 +10,6 @@ import com.example.juse.user.entity.User;
 import com.example.juse.user.mapper.UserMapper;
 import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Profile("plain")
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {

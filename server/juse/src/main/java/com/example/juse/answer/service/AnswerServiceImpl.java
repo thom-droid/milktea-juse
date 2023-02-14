@@ -11,11 +11,10 @@ import com.example.juse.question.service.QuestionService;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile("plain")
+
 @RequiredArgsConstructor
 @Service
 public class AnswerServiceImpl implements AnswerService {
