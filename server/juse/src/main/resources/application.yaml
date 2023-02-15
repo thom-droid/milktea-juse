@@ -1,6 +1,5 @@
 spring:
   profiles:
-    include: plain
     group:
       local:
         - db-local
@@ -11,14 +10,12 @@ spring:
         - config-prod
       test:
         - oauth-local
-  config:
-    import: 'file:///Users/thom/Downloads/project/chicken-milktea/test/'
 cors:
   allowed-origin: 'http://localhost:3000'
 
-#---
-#spring:
-#  config:
-#    import: 'file:///home/ec2-user/app/config/'
-#    activate:
-#      on-profile: prod
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import: 'file:///home/ec2-user/app/config/'

@@ -5,12 +5,8 @@ import com.example.juse.exception.ExceptionCode;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-
-@Profile("plain")
 @RequiredArgsConstructor
 @Service
 public class TagServiceImpl implements TagService {
