@@ -13,10 +13,6 @@ on:
   pull_request:
     branches: [ "refactoring-2" ]
 
-defaults:
-  run:
-    working-directory: server/juse
-
 permissions:
   contents: read
 
@@ -32,6 +28,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    - name: Moving to directory
+      run: |
+        cd server/juse
     - name: Setup gradle
       uses: gradle/gradle-build-action@v2
       with:
@@ -40,9 +39,12 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - uses: actions/upload-artifact@v3
-      if: failure()
-      with:
-        name: report
-        path: build/reports/
+
+
+#
+#    - uses: actions/upload-artifact@v3
+#      if: failure()
+#      with:
+#        name: report
+#        path: build/reports/
 
