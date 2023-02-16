@@ -43,9 +43,7 @@ jobs:
       with:
         gradle-version: 7.5
     - name: Gradle init and permission
-      run: |
-        cd server/juse
-        gradlew init
+      run: server/juse/gradlew init
     - name: Build with Gradle
       run: server/juse/gradlew build
 
