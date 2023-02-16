@@ -13,6 +13,10 @@ on:
   pull_request:
     branches: [ "refactoring-2" ]
 
+defaults:
+  run:
+    working-directory: server/juse
+
 permissions:
   contents: read
 
