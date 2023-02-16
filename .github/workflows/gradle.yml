@@ -35,14 +35,17 @@ jobs:
     - name: Moving to directory
       run: |
         pwd
-        cd server/juse/src/main/resources
+        ls
+        cd server/juse
         ls
     - name: Setup gradle
       uses: gradle/gradle-build-action@v2
       with:
         gradle-version: 7.5
-    - name: Permission to gradlew
-      run: chmod +x server/juse/gradlew
+    - name: Gradle init and permission
+      run: |
+        cd server/juse
+        gradlew init
     - name: Build with Gradle
       run: server/juse/gradlew build
 
