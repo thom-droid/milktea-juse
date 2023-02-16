@@ -16,6 +16,10 @@ on:
 permissions:
   contents: read
 
+#defaults:
+#  run:
+#    working-directory: d
+
 jobs:
   build:
 
@@ -30,7 +34,8 @@ jobs:
         distribution: 'temurin'
     - name: Moving to directory
       run: |
-        cd server/juse
+        pwd
+        cd server/juse/src/main/resources
         ls
     - name: Setup gradle
       uses: gradle/gradle-build-action@v2
