@@ -46,7 +46,7 @@ jobs:
       run: |
         cd server/juse
         chmod +x ./gradlew
-#        ./gradlew init
+        ./gradlew init
     - name: Build with Gradle
       run: server/juse/gradlew build
 
