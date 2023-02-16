@@ -37,9 +37,9 @@ jobs:
       with:
         gradle-version: 7.5
     - name: Permission to gradlew
-      run: chmod +x ./gradlew
+      run: chmod +x server/juse/gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: server/juse/gradlew build
 
 
 #
