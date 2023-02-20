@@ -49,7 +49,8 @@ jobs:
         chmod +x ./gradlew
         ./gradlew build
     - name: Compress to zip
-      run: zip -r ./juse-server.zip .
+      run: zip -r server-juse.zip .
+      shell: bash
     - name: "Configure AWS Credentials" Action For GitHub Actions
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -57,4 +58,4 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-2
     - name: Upload the file to S3
-      run: aws s3 cp --region ap-northeast-2 ./juse-server.zip s3://$S3_BUCKET_NAME/juse-server.zip
+      run: aws s3 cp --region ap-northeast-2 ./server-juse.zip s3://$S3_BUCKET_NAME/server-juse.zip
