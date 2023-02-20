@@ -6,12 +6,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
-@ActiveProfiles({"test"})
+@TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
 @Import(TestDBInstance.class)
 @SpringBootTest
-public class JuseApplicationTests {
+public abstract class JuseApplicationTests {
 
     protected String accessToken;
 

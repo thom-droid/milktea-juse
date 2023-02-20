@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
 @Import(TestDBInstance.class)
+@SpringBootTest
 public class TestDBTest {
 
     @Autowired

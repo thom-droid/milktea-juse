@@ -11,14 +11,14 @@ on:
   push:
     branches: [ "thom-droid-patch-1" ]
   pull_request:
-    branches: [ "refactoring-2" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
 
-#defaults:
-#  run:
-#    working-directory: d
+defaults:
+  run:
+    working-directory: server/juse
 
 jobs:
   build:
@@ -34,9 +34,11 @@ jobs:
         distribution: 'temurin'
     - name: Moving to directory
       run: |
+        echo "current location and files"
         pwd
         ls
         cd server/juse
+        echo "cd to server/juse"
         ls
     - name: Setup gradle
       uses: gradle/gradle-build-action@v2
@@ -47,12 +49,9 @@ jobs:
         cd server/juse
         chmod +x ./gradlew
         ./gradlew build
-
-
-#
-#    - uses: actions/upload-artifact@v3
-#      if: failure()
-#      with:
-#        name: report
-#        path: build/reports/
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: report
+        path: build/reports/
 
