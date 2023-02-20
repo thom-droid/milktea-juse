@@ -54,7 +54,6 @@ jobs:
         path: build/reports/
     - name: Compress to zip
       run: zip -r ./juse-server.zip .
-      shell: bash
     - name: "Configure AWS Credentials" Action For GitHub Actions
       uses: aws-actions/configure-aws-credentials@v1
       with:
