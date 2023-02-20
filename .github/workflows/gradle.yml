@@ -49,8 +49,10 @@ jobs:
         chmod +x ./gradlew
         ./gradlew build
     - name: Compress to zip
-      run: zip -r server-juse.zip .
-      shell: bash
+      run: |
+        pwd
+        zip -r server-juse.zip .
+        find . -type f -name server-juse.zip
     - name: "Configure AWS Credentials" Action For GitHub Actions
       uses: aws-actions/configure-aws-credentials@v1
       with:
