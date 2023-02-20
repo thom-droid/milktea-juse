@@ -37,16 +37,12 @@ jobs:
         echo "current location and files"
         pwd
         ls
-        cd server/juse
-        echo "cd to server/juse"
-        ls
     - name: Setup gradle
       uses: gradle/gradle-build-action@v2
       with:
         gradle-version: 7.5
     - name: Gradle init and permission
       run: |
-        cd server/juse
         chmod +x ./gradlew
         ./gradlew build
     - uses: actions/upload-artifact@v3
