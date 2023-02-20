@@ -20,6 +20,8 @@ defaults:
   run:
     working-directory: server/juse
 
+env:
+  S3_BUCKET_NAME: chicken-milktea-juse-server-deploy
 jobs:
   build:
 
@@ -50,4 +52,14 @@ jobs:
       with:
         name: report
         path: build/reports/
-
+    - name: Compress to zip
+      run: zip -r ./juse-server.zip .
+      shell: bash
+    - name: "Configure AWS Credentials" Action For GitHub Actions
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+    - name: Upload the file to S3
+      run: aws s3 cp --region ap-northeast-2 ./juse-server.zip s3://$S3_BUCKET_NAME/juse-server.zip
