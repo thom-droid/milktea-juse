@@ -35,29 +35,35 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+
     - name: Moving to directory
       run: |
         echo "current location and files"
         pwd
         ls
+
     - name: Setup gradle
       uses: gradle/gradle-build-action@v2
       with:
         gradle-version: 7.5
+
     - name: Gradle init and permission
       run: |
         chmod +x ./gradlew
         ./gradlew build
+
     - name: Compress to zip
       run: |
         pwd
         zip -r server-juse.zip .
         find . -type f -name server-juse.zip
-    - name: "Configure AWS Credentials" Action For GitHub Actions
+
+    - name: Configure AWS Credentials Action For GitHub Actions
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-2
+
     - name: Upload the file to S3
       run: aws s3 cp --region ap-northeast-2 ./server-juse.zip s3://$S3_BUCKET_NAME/server-juse.zip
