@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "thom-droid-patch-1" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
