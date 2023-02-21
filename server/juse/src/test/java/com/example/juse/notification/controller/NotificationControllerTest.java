@@ -1,18 +1,22 @@
 package com.example.juse.notification.controller;
 
+import com.example.juse.TestDBInstance;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@ActiveProfiles({"local"})
+//@ActiveProfiles({"test"})
+@TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
+@Import(TestDBInstance.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 class NotificationControllerTest {

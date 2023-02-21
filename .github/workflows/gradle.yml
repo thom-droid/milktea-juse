@@ -1,0 +1,76 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: server/juse
+
+env:
+  S3_BUCKET_NAME: chicken-milktea-juse-server-deploy
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Moving to directory
+      run: |
+        echo "current location and files"
+        pwd
+        ls
+
+    - name: Setup gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 7.5
+
+    - name: Gradle init and permission
+      run: |
+        chmod +x ./gradlew
+        ./gradlew build
+
+    - name: Compress to zip
+      run: |
+        pwd
+        zip -r server-juse.zip .
+        find . -type f -name server-juse.zip
+
+    - name: Configure AWS Credentials Action For GitHub Actions
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+
+    - name: Upload the file to S3
+      run: aws s3 cp --region ap-northeast-2 ./server-juse.zip s3://$S3_BUCKET_NAME/server-juse.zip
+
+    - name: Deploy the file CodeDeploy
+      run: >
+        aws deploy create-deployment --application-name codebuild-chicken-milktea-juse-deploy
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name chicken-milktea-juse-deploy-group
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=server-juse.zip
