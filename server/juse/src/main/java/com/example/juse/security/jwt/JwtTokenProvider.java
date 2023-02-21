@@ -7,27 +7,20 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class JwtTokenProvider {
 
-//    @Autowired
-//    private final UserDetailsService userDetailsService;
-
-    @Autowired
     private final PrincipalOauth2UserService principalOauth2UserService;
     private String secretKey = "token-secret-key";
 
@@ -36,7 +29,6 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    // JWT token 생성
     public TokenDto generateToken(String uid, String role) {
 
         long tokenPeriod = 1000L * 60L * 150000L;
@@ -79,9 +71,10 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        System.out.println("token = " + token);
-        System.out.println(this.getUid(token).toString());
-        PrincipalDetails userDetails = principalOauth2UserService.loadUserByEmail(this.getUid(token));
+        String uid = getUid(token);
+        log.info("token : {}", token);
+        log.info("uid : {}", uid);
+        PrincipalDetails userDetails = principalOauth2UserService.loadUserByEmail(uid);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

@@ -4,6 +4,10 @@ import { ReactComponent as CloseBtnIcon } from '../assets/icons/close.svg';
 import { ReactComponent as Github } from '../assets/images/github.svg';
 import theme from '../assets/styles/Theme';
 
+export const OAuth_API_ROOT = process.env.REACT_APP_OAUTH_ROOT;
+export const Google_URL = `${OAuth_API_ROOT}/google`;
+export const Github_URL = `${OAuth_API_ROOT}/github`;
+
 const LoginModal = ({ showModal, setShowModal }) => {
   const closeModal = () => {
     setShowModal(!showModal);
@@ -18,11 +22,11 @@ const LoginModal = ({ showModal, setShowModal }) => {
               <CloseBtnIcon />
             </CloseBtn>
             <p>환영합니다</p>
-            <GoogleLoginBtn href='https://jusemain.duckdns.org:8080/oauth2/authorization/google'>
+            <GoogleLoginBtn href = {Google_URL}>
               <GoogleLogo />
               <p>Google 계정으로 로그인</p>
             </GoogleLoginBtn>
-            <GoogleLoginBtn href='https://jusemain.duckdns.org:8080/oauth2/authorization/github'>
+            <GoogleLoginBtn href= {Github_URL}>
               <Github
                 width={'18px'}
                 height={'18px'}

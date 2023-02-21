@@ -11,12 +11,10 @@ import com.example.juse.exception.ExceptionCode;
 import com.example.juse.notification.entity.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Profile("plain")
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService{
 

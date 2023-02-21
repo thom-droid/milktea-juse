@@ -2,16 +2,17 @@ package com.example.juse.security.oauth;
 
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.social.repository.SocialUserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
+@RequiredArgsConstructor
+@Service
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     String provider;
     String providerId;
@@ -20,8 +21,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     String role;
     String name;
 
-    @Autowired
-    private SocialUserRepository socialUserRepository;
+    private final SocialUserRepository socialUserRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

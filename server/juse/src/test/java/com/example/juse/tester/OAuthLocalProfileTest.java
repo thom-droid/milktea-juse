@@ -4,14 +4,14 @@ import com.example.juse.security.config.OAuthProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ActiveProfiles("local")
+@TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
 @SpringBootTest
 public class OAuthLocalProfileTest {
 
@@ -23,7 +23,7 @@ public class OAuthLocalProfileTest {
 
         String google = "http://localhost:8080/oauth2/authorization/google";
         String github = "http://localhost:8080/oauth2/authorization/github";
-        String redirect = "http://localhost:3000/oauth2/redirect";
+        String redirect = "http://localhost:3000/oauth2";
 
         assertEquals(google, oAuthProperties.getGoogleRequestUri());
         assertEquals(github, oAuthProperties.getGithubRequestUri());

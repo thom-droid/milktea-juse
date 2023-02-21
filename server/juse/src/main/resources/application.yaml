@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    group:
+      local:
+        - db-local
+        - oauth-local
+      prod:
+        - db-prod
+        - oauth-prod
+        - config-prod
+      test:
+        - oauth-local
+cors:
+  allowed-origin: 'http://localhost:3000'
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import: 'file:///home/ec2-user/app/config/'
