@@ -67,3 +67,10 @@ jobs:
 
     - name: Upload the file to S3
       run: aws s3 cp --region ap-northeast-2 ./server-juse.zip s3://$S3_BUCKET_NAME/server-juse.zip
+
+    - name: Deploy the file CodeDeploy
+      run: >
+        aws deploy create-deployment --application-name codebuild-chicken-milktea-juse-deploy
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name chicken-milktea-juse-deploy-group
+        --se-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=server-juse.zip
