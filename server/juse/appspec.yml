@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 
 files:
-  - source: /server/juse
+  - source: server/juse
     destination: /home/ec2-user/codedeploy
 file_exists_behavior: OVERWRITE
 
@@ -15,7 +15,7 @@ permissions:
 
 hooks:
   ApplicationStart:
-    - location: scripts/deploy.sh
+    - location: server/juse/scripts/deploy.sh
       timeout: 60
       owner: ubuntu
       group: ubuntu
