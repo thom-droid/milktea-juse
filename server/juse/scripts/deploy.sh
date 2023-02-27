@@ -11,14 +11,14 @@ cp $REPOSITORY/build/libs/*.jar $REPOSITORY/
 
 echo "> current application pid" >> $REPOSITORY/log/deploy.log
 
-CURRENT_PIDS=$(pgrep -fl juse | grep jar | awk '{print $1}')
+CURRENT_PIDS=$(pgrep -fl java | awk '{print $1}')
 
 echo "> current application pids: ${CURRENT_PIDS[*]}" >> $REPOSITORY/log/deploy.log
 
 if [ -z "$CURRENT_PIDS" ]; then
   echo "> no application is running."
 else
-  for PID in "${CURRENT_PIDS[@]}"
+  for PID in ${CURRENT_PIDS[*]}
   do
     echo "> kill -15 $PID"
     kill -15 "$PID"
