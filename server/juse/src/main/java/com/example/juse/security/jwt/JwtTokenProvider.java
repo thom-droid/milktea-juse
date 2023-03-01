@@ -74,6 +74,7 @@ public class JwtTokenProvider {
         String uid = getUid(token);
         log.info("token : {}", token);
         log.info("uid : {}", uid);
+
         PrincipalDetails userDetails = principalOauth2UserService.loadUserByEmail(uid);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
