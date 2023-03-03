@@ -21,7 +21,7 @@ const EditNewMeeting = () => {
 		contact: '',
 		dueDate: '',
 		startingDate: '',
-		period: '',
+		periods: '',
 		onOffline: '',
 		content: '',
 		type: '',

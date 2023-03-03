@@ -19,7 +19,7 @@ const HeaderTemplate = ({
   setCount,
 }) => {
   // 모집 기간, 포지션 select options
-  const period = [
+  const periods = [
     { value: 'short', label: '1개월 미만' },
     { value: '1', label: '1개월' },
     { value: '2', label: '2개월' },
@@ -54,7 +54,7 @@ const HeaderTemplate = ({
   const [onlineBtnActive, setOnlineBtnActive] = useState('');
 
   // 예상 기간 선택
-  const [periodSelected, setPeriodSelected] = useState(period[0]);
+  const [periodSelected, setPeriodSelected] = useState(periods[0]);
 
   // 선택된 기술스택
   const [stack, setStack] = useState([]);
@@ -103,7 +103,7 @@ const HeaderTemplate = ({
     setPeriodSelected(e.value);
     setFormData({
       ...formData,
-      period: e.value,
+      periods: e.value,
     });
   };
 
@@ -290,15 +290,15 @@ const HeaderTemplate = ({
         <SelectType>
           <label>예상 기간</label>
           <Select
-            id='period'
-            options={period}
-            value={period.filter((option) => {
+            id='periods'
+            options={periods}
+            value={periods.filter((option) => {
               return (
                 // 글쓰기 화면에서 선택한 value
                 option.value === periodSelected
               );
             })}
-            defaultValue={period[0]}
+            defaultValue={periods[0]}
             onChange={periodHandler}
             theme={(theme) => ({
               ...theme,
@@ -518,7 +518,7 @@ const SelectType = styled.div`
   > .css-26l3qy-menu {
     background: ${({ theme }) => theme.background};
   } */
-  #period {
+  #periods {
     > div {
       background-color: ${({ theme }) => theme.background};
       color: ${({ theme }) => theme.text};
