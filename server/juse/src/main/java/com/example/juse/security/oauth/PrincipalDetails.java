@@ -1,10 +1,9 @@
 package com.example.juse.security.oauth;
 
 import com.example.juse.social.entity.SocialUser;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -14,17 +13,11 @@ import java.util.Map;
 
 @Data
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PrincipalDetails implements  OAuth2User {
 
-    private SocialUser socialUser;
-    private Map<String, Object> attributes;
-
-
-    @Autowired
-    public PrincipalDetails(SocialUser socialUser) {
-        this.socialUser = socialUser;
-    }
+    private final SocialUser socialUser;
+    private final Map<String, Object> attributes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

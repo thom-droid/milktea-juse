@@ -9,6 +9,7 @@ import com.example.juse.social.entity.SocialUser;
 import com.example.juse.social.repository.SocialUserRepository;
 import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -18,8 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -35,21 +36,10 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
 
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 
-        // 받아온 객체를 Map 형식으로 저장.
-        Map<String, Object> attributes = principalDetails.getAttributes();
+        log.info("principal details: {} ", principalDetails.getSocialUser().getEmail());
+        log.info("principal authorities: {} ", principalDetails.getSocialUser().getUser());
 
-        // 토큰을 발급받기 위해 SocialUser 객체로 이름과 email을 받아온다.
-        SocialUser socialUser = SocialUser.builder()
-                .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .build();
-
-        // Github 로그인일 경우
-        SocialUser githubUser = findByEmailGithub((String) attributes.get("email"));
-
-        if (request.getRequestURI().equals("/login/oauth2/code/github") && githubUser.getEmail() == null) {
-            socialUser.setEmail(attributes.get("login") + "@github.com");
-        }
+        SocialUser socialUser = principalDetails.getSocialUser();
 
         // email을 기준으로 토큰 발급
         TokenDto tokenDto = jwtTokenProvider.generateToken(socialUser.getEmail(), "ROLE_USER");
@@ -59,14 +49,11 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
 
         String redirectUrl = oAuthProperties.getRedirectUrl();
         String token = tokenDto.getAccessToken();
-        boolean isSocialUserNull = socialUser.getEmail() == null;
+        boolean isSocialUserNull = socialUser.getUser() == null;
         String redirectUri = UriUtils.getRedirectUriAfterOAuthAuthorized(redirectUrl, token, isSocialUserNull);
 
         // 최초 로그인 시 추가 회원가입하기 위해 이동.
         response.sendRedirect(redirectUri);
     }
 
-    public SocialUser findByEmailGithub(String email) {
-        return socialUserRepository.findGitByEmail(email).orElseGet(SocialUser::new);
-    }
 }
