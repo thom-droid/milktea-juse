@@ -36,7 +36,7 @@ public class PrincipalArgumentResolver implements HandlerMethodArgumentResolver 
                 .id(1L)
                 .email("user1 email").build();
 
-        PrincipalDetails principalDetails = new PrincipalDetails(socialUser, null);
+        PrincipalDetails principalDetails = new PrincipalDetails(socialUser);
 
         return principalDetails;
     }

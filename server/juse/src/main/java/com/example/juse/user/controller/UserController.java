@@ -11,7 +11,6 @@ import com.example.juse.user.mapper.UserMapper;
 import com.example.juse.user.repository.UserRepository;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 
-@Slf4j
 @RestController
 @Validated
 @RequiredArgsConstructor
@@ -85,9 +83,7 @@ public class UserController {
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails
 
     ) {
-        log.info("principal: {}", principalDetails);
-        log.info("social users: {}", principalDetails.getSocialUser());
-        log.info("user: {}", principalDetails.getSocialUser().getUser());
+
         long userId = principalDetails.getSocialUser().getUser().getId();
 
         User userProfile = userService.getProfile(userId);
