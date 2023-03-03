@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.Base64;
 import java.util.Date;
 
 @Slf4j
@@ -20,12 +22,14 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
+    private String secretKey = "token-secret-key";
 
-    private final SecretKeyHolder secretKeyHolder;
+    @PostConstruct
+    protected void init() {
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
 
     public TokenDto generateToken(String uid, String role) {
-
-        final String secretKey = secretKeyHolder.getSecretKey();
 
         long tokenPeriod = 1000L * 60L * 150000L;
         long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 3L;
@@ -50,8 +54,6 @@ public class JwtTokenProvider {
     }
 
     public boolean verifyToken(String token) {
-        final String secretKey = secretKeyHolder.getSecretKey();
-
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey)
@@ -65,13 +67,13 @@ public class JwtTokenProvider {
     }
 
     public String getUid(String token) {
-        final String secretKey = secretKeyHolder.getSecretKey();
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public Authentication getAuthentication(String token) {
         String uid = getUid(token);
-
+        log.info("token : {}", token);
+        log.info("uid : {}", uid);
         PrincipalDetails userDetails = principalOauth2UserService.loadUserByEmail(uid);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());

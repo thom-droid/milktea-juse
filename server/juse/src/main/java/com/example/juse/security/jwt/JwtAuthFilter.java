@@ -1,8 +1,6 @@
 package com.example.juse.security.jwt;
 
-import com.example.juse.security.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -14,7 +12,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthFilter extends GenericFilterBean {
 
@@ -27,11 +24,6 @@ public class JwtAuthFilter extends GenericFilterBean {
         if (token != null && jwtTokenProvider.verifyToken(token)) {
 
             Authentication auth = jwtTokenProvider.getAuthentication(token);
-            PrincipalDetails details = (PrincipalDetails) auth.getPrincipal();
-
-            log.info("social users: {} ", details.getSocialUser().getName());
-            log.info("user: {}", details.getSocialUser().getUser());
-
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 
