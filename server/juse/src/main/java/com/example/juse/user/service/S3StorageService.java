@@ -18,14 +18,16 @@ import java.nio.ByteBuffer;
 public class S3StorageService extends AbstractStorageServiceImpl {
 
     private static final String S3_IMAGE_BUCKET = "chicken-milktea-juse.com";
-    private static final String KEY_PREFIX = "icons/user/thumb/";
+    private static final String KEY_PREFIX = "icons/user/";
     private final S3Client s3Client;
 
     public String store(MultipartFile file) throws IOException {
 
         byte[] data = file.getBytes();
-        String fileName = file.getOriginalFilename();
+        String fileName = createUniqueFileName(file.getOriginalFilename());
         String key = KEY_PREFIX + fileName;
+
+        validateImageExtension(file);
 
         // multipart request and response id
         CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
@@ -64,8 +66,7 @@ public class S3StorageService extends AbstractStorageServiceImpl {
                 .multipartUpload(completedMultipartUpload)
                 .build();
 
-        CompleteMultipartUploadResponse response = s3Client.completeMultipartUpload(completeMultipartUploadRequest);
-        log.info(response.location());
+        s3Client.completeMultipartUpload(completeMultipartUploadRequest);
 
         return fileName;
 

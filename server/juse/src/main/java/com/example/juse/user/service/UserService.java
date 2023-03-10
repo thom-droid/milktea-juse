@@ -15,8 +15,6 @@ public interface UserService {
 
     void deleteAccount(long userId);
 
-    User create(User mappedObj);
-
     User verifyUserById(long userId);
 
     boolean isNicknameAvailable(String nickname);

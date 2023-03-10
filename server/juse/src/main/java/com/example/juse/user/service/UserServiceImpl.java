@@ -102,34 +102,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User mappedObj) {
-
-        System.out.println("mappedObj.toString() = " + mappedObj.toString());
-
-        if (!mappedObj.getUserTagList().isEmpty()) {
-            mappedObj.getUserTagList().forEach(
-                    userTag -> {
-                        String tagName = userTag.getTag().getName();
-                        Tag tag = tagService.findByName(tagName);
-                        userTag.addUser(mappedObj);
-                        userTag.addTag(tag);
-                    }
-            );
-        }
-
-        return userRepository.save(mappedObj);
-    }
-
-    @Override
     public User createUser(User user, MultipartFile profileImg) throws IOException {
 
         String socialUserEmail = user.getSocialUser().getEmail();
 
-        if (isDuplicatedBy(socialUserEmail)) {
+        if (this.isDuplicatedBy(socialUserEmail)) {
             throw new CustomRuntimeException(ExceptionCode.USER_ALREADY_EXIST);
         }
 
-        if(profileImg != null) {
+        if (profileImg != null) {
             String savedName = storageService.store(profileImg);
 
             String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
