@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User mappedObj, MultipartFile profileImg) {
+    public User update(User mappedObj, MultipartFile profileImg) throws IOException {
         User user = verifyUserById(mappedObj.getId());
 
         if(profileImg != null) {
@@ -120,7 +121,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user, MultipartFile profileImg) {
+    public User createUser(User user, MultipartFile profileImg) throws IOException {
 
         String socialUserEmail = user.getSocialUser().getEmail();
 

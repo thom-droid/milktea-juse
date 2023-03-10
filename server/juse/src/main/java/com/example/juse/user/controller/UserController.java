@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
 
 
 @Slf4j
@@ -41,10 +42,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/join", consumes = {
-            MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.MULTIPART_FORM_DATA_VALUE
+    })
     public ResponseEntity userJoin(@AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
                                    @RequestPart @Valid UserRequestDto.Post userPostDto,
-                                   @RequestPart(required = false) MultipartFile profileImg) {
+                                   @RequestPart(required = false) MultipartFile profileImg) throws IOException {
 
         User mappedObj = userMapper.toEntityFrom(userPostDto);
         SocialUser socialUser = principalDetails.getSocialUser();
@@ -117,7 +120,7 @@ public class UserController {
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
             @RequestPart @Valid UserRequestDto.Patch patchDto,
             @RequestPart(required = false) MultipartFile profileImg
-    ) {
+    ) throws IOException {
         long userId = principalDetails.getSocialUser().getUser().getId();
         SocialUser socialUser = principalDetails.getSocialUser();
         patchDto.setId(userId);
