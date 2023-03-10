@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface SocialUserRepository extends JpaRepository<SocialUser, Long> {
 
-    SocialUser findByEmail(String email);
+    Optional<SocialUser> findByEmail(String email);
 
     Optional<SocialUser> findGitByEmail(String email);
 }

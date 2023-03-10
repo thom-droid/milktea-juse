@@ -4,7 +4,7 @@ import { ReactComponent as CloseBtnIcon } from '../assets/icons/close.svg';
 import { ReactComponent as Github } from '../assets/images/github.svg';
 import theme from '../assets/styles/Theme';
 
-export const OAuth_API_ROOT = process.env.REACT_APP_OAUTH_ROOT;
+export const OAuth_API_ROOT = process.env.REACT_APP_API_ROOT + "/oauth2/authorization";
 export const Google_URL = `${OAuth_API_ROOT}/google`;
 export const Github_URL = `${OAuth_API_ROOT}/github`;
 

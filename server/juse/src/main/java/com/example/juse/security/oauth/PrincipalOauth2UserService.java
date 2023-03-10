@@ -10,6 +10,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.NoSuchElementException;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -23,11 +26,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     private final SocialUserRepository socialUserRepository;
 
+    private Map<String, Object> attributes;
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        System.out.println("userRequest = " + userRequest.getClientRegistration());
         log.info("user info : {}", oAuth2User.getAttributes().toString());
         log.info("user Authorities : {}", oAuth2User.getAuthorities());
 
@@ -43,41 +47,38 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         if(userRequest.getClientRegistration().getRegistrationId().equals("github")) {
             provider =  userRequest.getClientRegistration().getClientId();
             providerId = oAuth2User.getAttribute("id").toString();
-            email = oAuth2User.getAttribute("email");
+            name = oAuth2User.getAttribute("login");
+            email = name + "@github.com";
             img = oAuth2User.getAttribute("avatar_url");
             role = "ROLE_USER";
-            name = oAuth2User.getAttribute("login");
-            if (email == null) {
-                email = oAuth2User.getAttribute("login") + "@github.com";
-            }
         }
 
-        log.info("email check : {} ", (Object) oAuth2User.getAttribute("email"));
-        SocialUser socialuser = socialUserRepository.findByEmail(email);
+        log.info("email check 2 : {}", email);
 
-        if (socialuser == null) {
-            socialuser = SocialUser.builder()
-                    .email(email)
-                    .role(role)
-                    .provider(provider)
-                    .providerId(providerId)
-                    .name(name)
-                    .img(img)
-                    .build();
+        SocialUser socialuser = socialUserRepository.findByEmail(email)
+                .orElseGet(() -> {
+                            SocialUser newSocialUser = SocialUser.builder()
+                                    .email(email)
+                                    .role(role)
+                                    .provider(provider)
+                                    .providerId(providerId)
+                                    .name(name)
+                                    .img(img)
+                                    .build();
 
-//            System.out.println("##########socialuser.toString() = " + socialuser.toString());
-            socialUserRepository.save(socialuser);
-        }
+                            return socialUserRepository.save(newSocialUser);
+                        }
+                );
+        
+        log.info(socialuser.toString());
+        attributes = oAuth2User.getAttributes();
 
         return new PrincipalDetails(socialuser, oAuth2User.getAttributes());
     }
 
     public PrincipalDetails loadUserByEmail(String email) {
-        SocialUser socialUser = socialUserRepository.findByEmail(email);
-        if (socialUser != null) {
-            return new PrincipalDetails(socialUser);
-        }
 
-        throw new RuntimeException("Not Found Email");
+        SocialUser socialUser = socialUserRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        return new PrincipalDetails(socialUser, attributes);
     }
 }
