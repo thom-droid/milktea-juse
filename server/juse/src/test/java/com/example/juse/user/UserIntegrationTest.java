@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,7 +95,7 @@ public class UserIntegrationTest {
     }
 
     @Test
-    public void givenMockMultipartFileAndAccessToken_whenUserPost_thenImageStored() throws Exception {
+    public void givenMockMultipartFileAndAccessToken_whenUserPost_thenSucceed() throws Exception {
 
         //given
         UserRequestDto.Post request = UserRequestDto.Post.builder()
@@ -120,7 +121,8 @@ public class UserIntegrationTest {
         );
 
         resultActions.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.email").value("test1@gmail.com"));
+                .andExpect(jsonPath("$.data.email").value("test1@gmail.com"))
+                .andDo(print());
 
     }
 

@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User mappedObj, MultipartFile profileImg) throws IOException {
+
         User user = verifyUserById(mappedObj.getId());
 
         if(profileImg != null) {
@@ -95,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteAccount(long userId) {
 
-        User user = verifyUserById(userId);
+        verifyUserById(userId);
 
         userRepository.deleteById(userId);
 
@@ -106,37 +107,20 @@ public class UserServiceImpl implements UserService {
 
         String socialUserEmail = user.getSocialUser().getEmail();
 
-        if (this.isDuplicatedBy(socialUserEmail)) {
+        if (isDuplicatedBy(socialUserEmail)) {
             throw new CustomRuntimeException(ExceptionCode.USER_ALREADY_EXIST);
         }
 
-        if (profileImg != null) {
-            String savedName = storageService.store(profileImg);
-
-            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("images/resize/")
-                    .path(savedName)
-                    .toUriString();
-
-            user.setImg(uri);
-
-            String myUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("images/")
-                    .path(savedName)
-                    .toUriString();
-
-            user.setMyImg(myUri);
+        if (!user.getUserTagList().isEmpty()) {
+            setUserTag(user);
         }
 
-        if (!user.getUserTagList().isEmpty()) {
-            user.getUserTagList().forEach(
-                    userTag -> {
-                        String tagName = userTag.getTag().getName();
-                        Tag tag = tagService.findByName(tagName);
-                        userTag.addUser(user);
-                        userTag.addTag(tag);
-                    }
-            );
+        if (profileImg != null) {
+            String savedPath = storageService.store(profileImg);
+            user.setImg(savedPath);
+
+            //Todo : compress and set limit to the size of the image
+
         }
 
         return userRepository.save(user);
@@ -160,5 +144,16 @@ public class UserServiceImpl implements UserService {
 
     public boolean isDuplicatedBy(String socialUserEmail) {
         return userRepository.findByEmail(socialUserEmail) != null;
+    }
+
+    private void setUserTag(User user) {
+        user.getUserTagList().forEach(
+                userTag -> {
+                    String tagName = userTag.getTag().getName();
+                    Tag tag = tagService.findByName(tagName);
+                    userTag.addUser(user);
+                    userTag.addTag(tag);
+                }
+        );
     }
 }

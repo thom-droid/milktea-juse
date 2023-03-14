@@ -8,8 +8,6 @@ public interface StorageService {
 
     String store(MultipartFile multipartFile) throws IOException;
 
-    String createUniqueFileName(String fileName);
-
 
 
 }

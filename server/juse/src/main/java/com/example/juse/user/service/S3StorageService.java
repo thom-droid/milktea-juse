@@ -1,5 +1,6 @@
 package com.example.juse.user.service;
 
+import com.example.juse.helper.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ public class S3StorageService extends AbstractStorageServiceImpl {
     public String store(MultipartFile file) throws IOException {
 
         byte[] data = file.getBytes();
-        String fileName = createUniqueFileName(file.getOriginalFilename());
+        String fileName = StringUtils.createUniqueAndRegulatedFileName(file.getOriginalFilename());
         String key = KEY_PREFIX + fileName;
 
         validateImageExtension(file);
@@ -68,13 +69,12 @@ public class S3StorageService extends AbstractStorageServiceImpl {
 
         s3Client.completeMultipartUpload(completeMultipartUploadRequest);
 
-        return fileName;
+        return StringUtils.buildLocation(S3_IMAGE_BUCKET, fileName, "icons", "user");
 
     }
 
     private ByteBuffer toByteBuffer(byte[] bytes) {
         return ByteBuffer.wrap(bytes);
     }
-
 
 }

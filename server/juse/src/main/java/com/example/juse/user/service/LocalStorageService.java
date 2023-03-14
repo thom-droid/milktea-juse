@@ -1,7 +1,6 @@
 package com.example.juse.user.service;
 
-import com.example.juse.exception.CustomRuntimeException;
-import com.example.juse.exception.ExceptionCode;
+import com.example.juse.helper.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +28,7 @@ public class LocalStorageService extends AbstractStorageServiceImpl{
     public String store(MultipartFile file){
 
         String originalFileName = Objects.requireNonNull(file.getOriginalFilename()).replaceAll(" ", "");
-        String savedName = createUniqueFileName(originalFileName);
+        String savedName = StringUtils.createUniqueAndRegulatedFileName(originalFileName);
         String formatName = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
 
         Path destinationFile = this.rootLocation.resolve(savedName).normalize().toAbsolutePath();
