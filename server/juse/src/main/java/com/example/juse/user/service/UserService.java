@@ -20,4 +20,6 @@ public interface UserService {
     boolean isNicknameAvailable(String nickname);
 
     User createUser(User user, MultipartFile profileImg) throws IOException;
+
+    void validateIdentity(long requestUserId, long actualUserId);
 }

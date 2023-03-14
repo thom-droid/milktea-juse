@@ -22,7 +22,7 @@ public class S3StorageService extends AbstractStorageServiceImpl {
     private static final String KEY_PREFIX = "icons/user/";
     private final S3Client s3Client;
 
-    public String store(MultipartFile file) throws IOException {
+    public String store(MultipartFile file) throws IOException, S3Exception {
 
         byte[] data = file.getBytes();
         String fileName = StringUtils.createUniqueAndRegulatedFileName(file.getOriginalFilename());
