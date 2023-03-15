@@ -1,5 +1,6 @@
-package com.example.juse;
+package com.example.juse.config.test;
 
+import com.example.juse.config.TestDBInstance;
 import com.example.juse.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

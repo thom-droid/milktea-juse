@@ -1,6 +1,6 @@
 package com.example.juse.question.service;
 
-import com.example.juse.TestDBInstance;
+import com.example.juse.config.TestDBInstance;
 import com.example.juse.question.dto.QuestionRequestDto;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.mapper.QuestionMapper;

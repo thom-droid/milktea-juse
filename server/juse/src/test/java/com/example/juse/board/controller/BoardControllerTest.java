@@ -1,6 +1,6 @@
 package com.example.juse.board.controller;
 
-import com.example.juse.TestDBInstance;
+import com.example.juse.config.TestDBInstance;
 import com.example.juse.board.dto.BoardRequestDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;

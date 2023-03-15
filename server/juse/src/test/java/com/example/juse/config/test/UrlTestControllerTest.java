@@ -1,5 +1,6 @@
-package com.example.juse.tester;
+package com.example.juse.config.test;
 
+import com.example.juse.config.UrlTestController;
 import com.example.juse.helper.resolver.uri.RequestURLArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

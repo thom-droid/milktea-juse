@@ -1,4 +1,4 @@
-package com.example.juse;
+package com.example.juse.config;
 
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;

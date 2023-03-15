@@ -1,6 +1,6 @@
 package com.example.juse.security.handler;
 
-import com.example.juse.helper.utils.UriUtils;
+import com.example.juse.helper.utils.StringUtils;
 import com.example.juse.security.config.OAuthProperties;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
@@ -50,7 +50,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
         String redirectUrl = oAuthProperties.getRedirectUrl();
         String token = tokenDto.getAccessToken();
         boolean isSocialUserNull = socialUser.getUser() == null;
-        String redirectUri = UriUtils.getRedirectUriAfterOAuthAuthorized(redirectUrl, token, isSocialUserNull);
+        String redirectUri = StringUtils.getRedirectUriAfterOAuthAuthorized(redirectUrl, token, isSocialUserNull);
 
         // 최초 로그인 시 추가 회원가입하기 위해 이동.
         response.sendRedirect(redirectUri);

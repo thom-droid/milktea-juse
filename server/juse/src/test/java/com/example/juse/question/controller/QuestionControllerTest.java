@@ -1,6 +1,6 @@
 package com.example.juse.question.controller;
 
-import com.example.juse.TestDBInstance;
+import com.example.juse.config.TestDBInstance;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.event.NotificationEvent;

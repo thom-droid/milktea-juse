@@ -1,6 +1,6 @@
 package com.example.juse.notification.controller;
 
-import com.example.juse.TestDBInstance;
+import com.example.juse.config.TestDBInstance;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
 import org.junit.jupiter.api.Test;
