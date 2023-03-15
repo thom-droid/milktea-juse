@@ -1,6 +1,7 @@
-package com.example.juse.tester;
+package com.example.juse.config;
 
 import com.example.juse.helper.resolver.uri.RequestURLArgumentResolver;
+import com.example.juse.tester.UrlTestController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

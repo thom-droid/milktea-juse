@@ -1,4 +1,4 @@
-package com.example.juse.unit;
+package com.example.juse.helper;
 
 import com.example.juse.helper.utils.StringUtils;
 import org.junit.jupiter.api.Test;

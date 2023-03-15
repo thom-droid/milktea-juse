@@ -1,7 +1,7 @@
-package com.example.juse;
+package com.example.juse.config;
 
 import com.example.juse.helper.storage.config.StorageConfig;
-import com.example.juse.user.service.S3StorageService;
+import com.example.juse.helper.storage.S3StorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

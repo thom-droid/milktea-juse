@@ -2,6 +2,7 @@ package com.example.juse.user.service;
 
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.helper.storage.StorageService;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.entity.UserTag;
 import com.example.juse.tag.service.TagService;

@@ -1,4 +1,4 @@
-package com.example.juse.tester;
+package com.example.juse.config;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

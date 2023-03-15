@@ -1,4 +1,4 @@
-package com.example.juse;
+package com.example.juse.config;
 
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;

@@ -1,6 +1,6 @@
 package com.example.juse.notification.service;
 
-import com.example.juse.TestDBInstance;
+import com.example.juse.config.TestDBInstance;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;

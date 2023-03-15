@@ -1,4 +1,4 @@
-package com.example.juse;
+package com.example.juse.config;
 
 import com.example.juse.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;

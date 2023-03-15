@@ -1,6 +1,6 @@
 package com.example.juse.application.controller;
 
-import com.example.juse.TestDBInstance;
+import com.example.juse.config.TestDBInstance;
 import com.example.juse.application.entity.Application;
 import com.example.juse.application.repository.ApplicationRepository;
 import com.example.juse.board.entity.Board;

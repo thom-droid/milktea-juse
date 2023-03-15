@@ -1,4 +1,4 @@
-package com.example.juse.user.service;
+package com.example.juse.helper.storage;
 
 import com.example.juse.helper.utils.StringUtils;
 import lombok.RequiredArgsConstructor;

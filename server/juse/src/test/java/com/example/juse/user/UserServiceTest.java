@@ -7,7 +7,7 @@ import com.example.juse.tag.service.UserTagService;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.mapper.UserMapper;
 import com.example.juse.user.repository.UserRepository;
-import com.example.juse.user.service.StorageService;
+import com.example.juse.helper.storage.StorageService;
 import com.example.juse.user.service.UserService;
 import com.example.juse.user.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
