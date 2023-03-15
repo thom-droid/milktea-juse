@@ -1,5 +1,6 @@
-package com.example.juse.config;
+package com.example.juse.config.test;
 
+import com.example.juse.config.TestDBInstance;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
 import org.junit.jupiter.api.BeforeEach;

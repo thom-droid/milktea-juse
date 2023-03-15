@@ -1,4 +1,4 @@
-package com.example.juse.config;
+package com.example.juse.config.test;
 
 import com.example.juse.security.config.OAuthProperties;
 import org.junit.jupiter.api.Test;

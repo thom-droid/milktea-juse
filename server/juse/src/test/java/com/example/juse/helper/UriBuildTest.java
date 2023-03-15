@@ -18,7 +18,7 @@ public class UriBuildTest {
     @Test
     public void givenMockMultiPartFile_thenFileNameReturned() {
 
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("image", "image", MediaType.IMAGE_JPEG_VALUE, getRandomByte(5));
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("image", "image.jpeg", MediaType.IMAGE_JPEG_VALUE, getRandomByte(5));
 
         //expected
         String expected = UUID.randomUUID()+"-"+mockMultipartFile.getOriginalFilename();

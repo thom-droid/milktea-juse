@@ -3,6 +3,7 @@ package com.example.juse.helper.storage;
 import com.example.juse.helper.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tika.Tika;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,13 +15,17 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class S3StorageService extends AbstractStorageServiceImpl {
 
     private static final String S3_IMAGE_BUCKET = "chicken-milktea-juse.com";
     private static final String KEY_PREFIX = "icons/user/";
     private final S3Client s3Client;
+
+    public S3StorageService(Tika tika, S3Client s3Client) {
+        super(tika);
+        this.s3Client = s3Client;
+    }
 
     public String store(MultipartFile file) throws IOException, S3Exception {
 

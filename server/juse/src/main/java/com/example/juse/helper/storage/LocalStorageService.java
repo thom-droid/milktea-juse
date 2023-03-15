@@ -2,6 +2,7 @@ package com.example.juse.helper.storage;
 
 import com.example.juse.helper.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,9 @@ public class LocalStorageService extends AbstractStorageServiceImpl{
     private final Path rootLocation = Paths.get("C:\\images");
     private final Path resizeLocation = Paths.get("C:\\images\\resize\\");
 
+    public LocalStorageService(Tika tika) {
+        super(tika);
+    }
 
     public String store(MultipartFile file){
 

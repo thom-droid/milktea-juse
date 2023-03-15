@@ -2,6 +2,7 @@ package com.example.juse.helper.storage.config;
 
 import com.example.juse.helper.storage.S3StorageService;
 import com.example.juse.helper.storage.StorageService;
+import org.apache.tika.Tika;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -21,7 +22,11 @@ public class StorageConfig {
 
     @Bean
     public StorageService storageService() {
-        return new S3StorageService(s3Client());
+        return new S3StorageService(tika(), s3Client());
     }
 
+    @Bean
+    public Tika tika() {
+        return new Tika();
+    }
 }

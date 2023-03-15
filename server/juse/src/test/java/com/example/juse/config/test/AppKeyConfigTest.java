@@ -1,4 +1,4 @@
-package com.example.juse.config;
+package com.example.juse.config.test;
 
 import com.example.juse.security.jwt.AppKeyConfig;
 import com.example.juse.security.jwt.SecretKeyHolder;

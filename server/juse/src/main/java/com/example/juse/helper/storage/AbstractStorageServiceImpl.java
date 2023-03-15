@@ -12,13 +12,16 @@ import java.util.List;
 
 public abstract class AbstractStorageServiceImpl implements StorageService {
 
-    private static final Tika TIKA = new Tika();
+    private final Tika tika;
     private static final List<String> IMAGE_TYPE_LIST = Arrays.asList(
             "image/jpeg", "image/pjpeg", "image/png",
             "image/gif", "image/bmp", "image/x-windows-bmp");
 
+    protected AbstractStorageServiceImpl(Tika tika) {
+        this.tika = tika;
+    }
 
-    protected void validateImageExtension(MultipartFile file) {
+    public void validateImageExtension(MultipartFile file) {
         String mimeType = detectMimeType(file);
         boolean valid = IMAGE_TYPE_LIST.stream()
                 .anyMatch(notValidType -> notValidType.equalsIgnoreCase(mimeType));
@@ -29,7 +32,7 @@ public abstract class AbstractStorageServiceImpl implements StorageService {
 
     private String detectMimeType(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
-            return TIKA.detect(inputStream);
+            return tika.detect(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
