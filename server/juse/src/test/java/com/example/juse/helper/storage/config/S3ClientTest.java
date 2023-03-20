@@ -1,13 +1,10 @@
-package com.example.juse.config.test;
+package com.example.juse.helper.storage.config;
 
-import com.example.juse.helper.storage.AbstractStorageServiceImpl;
-import com.example.juse.helper.storage.config.StorageConfig;
 import com.example.juse.helper.storage.S3StorageService;
 import org.apache.tika.Tika;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,17 +12,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(classes = {StorageConfig.class})
+@ContextConfiguration(classes = {StorageConfig.class, StorageProfile.class, StorageProfileForLocal.class})
 @SpringBootTest
 public class S3ClientTest {
 
