@@ -42,5 +42,7 @@ echo "> running $JAR_NAME ..." >> $REPOSITORY/log/deploy.log
 
 nohup java -jar \
 -Dspring.profiles.active=prod \
--Dserver.port=80 "$JAR_NAME" > /home/ec2-user/app/tmp/log/nohup.out 2>&1 &
+-Dserver.port=80 "$JAR_NAME" \
+-Dspring.config.import=file:///home/ec2-user/app/config/ \
+> /home/ec2-user/app/tmp/log/nohup.out 2>&1 &
 
