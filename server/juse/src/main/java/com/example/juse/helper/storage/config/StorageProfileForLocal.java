@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import software.amazon.awssdk.profiles.ProfileFile;
 import software.amazon.awssdk.profiles.ProfileFileLocation;
 
-@Profile("local")
+@Profile("!prod")
 @Component
 public class StorageProfileForLocal implements StorageProfile{
 
