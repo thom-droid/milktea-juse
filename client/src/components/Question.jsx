@@ -81,8 +81,15 @@ const Question = ({ data }) => {
               <p className='name'>{data.user.nickname}</p>
             </Link>
             <p className='date'>{`${
-              data.createdAt.split('T')[0]
-            } ${data.createdAt.split('T')[1].slice(0, 5)}`}</p>
+				data.createdAt
+				// data.createdAt.includes('T')
+				// 	? `${data.created_at.split('T')[0]} ${
+				// 		data.created_at.split('T')[1].slice(0, 5)
+				// 	}`
+				// 	: data.created_at
+				//   data.created_at.split('T')[0]
+				// } ${data.created_at.split('T')[1].slice(0, 5)}
+			}`}</p>
           </NameContainer>
         </UserInfo>
         <ContentButton>

@@ -1,9 +1,10 @@
 package com.example.juse.board.controller;
 
-import com.example.juse.config.TestDBInstance;
 import com.example.juse.board.dto.BoardRequestDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
+import com.example.juse.config.TestDBInstance;
+import com.example.juse.security.config.UriProperties;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,12 +20,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,6 +51,10 @@ class BoardControllerTest {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private UriProperties uriProperties;
+
     protected String accessToken;
 
     private final String requestMappingUrl = "http://localhost:8080";
@@ -102,8 +109,10 @@ class BoardControllerTest {
         //then
         resultActions.andExpect(status().isCreated());
         int size = boardRepository.findAll().size();
-        String expectedUrl = resultActions.andReturn().getRequest().getRequestURL().append("/").append(size).toString();
+        String url = uriProperties.getAllowedOrigin();
+        String expectedUrl = UriComponentsBuilder.fromHttpUrl(url).pathSegment("boards", "{id}").build(size).toString();
         resultActions.andExpect(jsonPath("$.data.url").value(expectedUrl));
+        resultActions.andDo(print());
 
     }
 }
