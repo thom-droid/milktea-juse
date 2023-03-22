@@ -3,7 +3,6 @@ package com.example.juse.helper.storage;
 import com.example.juse.helper.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -18,7 +17,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
-@Service
 @Slf4j
 public class LocalStorageService extends AbstractStorageServiceImpl{
 
@@ -45,7 +43,7 @@ public class LocalStorageService extends AbstractStorageServiceImpl{
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
             imageResize(file, resizePath, formatName);
 
-            } catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Failed to store file", e);
         }
         return savedName;
@@ -80,3 +78,4 @@ public class LocalStorageService extends AbstractStorageServiceImpl{
     }
 
 }
+//@Service

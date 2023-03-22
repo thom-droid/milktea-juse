@@ -1,13 +1,11 @@
 package com.example.juse.security.handler;
 
 import com.example.juse.helper.utils.StringUtils;
-import com.example.juse.security.config.OAuthProperties;
+import com.example.juse.security.config.UriProperties;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
-import com.example.juse.social.repository.SocialUserRepository;
-import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -27,9 +25,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
 
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final SocialUserRepository socialUserRepository;
-    private final UserRepository userRepository;
-    private final OAuthProperties oAuthProperties;
+    private final UriProperties oAuthProperties;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

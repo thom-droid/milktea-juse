@@ -6,9 +6,9 @@ import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
 import com.example.juse.helper.filterings.FilterOptions;
+import com.example.juse.helper.utils.StringUtils;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.tag.entity.Tag;
-import com.example.juse.tag.repository.BoardTagRepository;
 import com.example.juse.tag.service.BoardTagService;
 import com.example.juse.tag.service.TagService;
 import com.example.juse.user.entity.User;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +30,6 @@ public class BoardServiceImpl implements BoardService {
     private final UserService userService;
     private final TagService tagService;
     private final BoardMapper boardMapper;
-    private final BoardTagRepository boardTagRepository;
     private final BoardTagService boardTagService;
 
     @Override
@@ -57,10 +55,10 @@ public class BoardServiceImpl implements BoardService {
 
         Board board = boardRepository.save(post);
 
-        String id = post.getId().toString();
+        Long id = post.getId();
         String url = post.getUrl();
 
-        String builtUri = UriComponentsBuilder.fromHttpUrl(url).pathSegment(id).build().toUriString();
+        String builtUri = StringUtils.createBoardRedirectUri(url, id);
         board.setUrl(builtUri);
 
         return boardRepository.save(post);

@@ -1,7 +1,6 @@
 package com.example.juse.helper.storage;
 
 import com.example.juse.helper.utils.StringUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.http.MediaType;
