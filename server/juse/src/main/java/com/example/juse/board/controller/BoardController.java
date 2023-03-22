@@ -11,7 +11,7 @@ import com.example.juse.dto.Pagination;
 import com.example.juse.dto.SingleResponseDto;
 import com.example.juse.exception.validator.NotEmptyToken;
 import com.example.juse.helper.filterings.FilterOptions;
-import com.example.juse.helper.resolver.uri.RequestURL;
+import com.example.juse.security.config.UriProperties;
 import com.example.juse.security.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,17 +37,17 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final BoardMapper boardMapper;
+    private final UriProperties uriProperties;
 
     @PostMapping
     public ResponseEntity<SingleResponseDto<BoardResponseDto.Single>> post(
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
-            @RequestBody @Valid BoardRequestDto.Post postDto,
-            @RequestURL String requestURL
+            @RequestBody @Valid BoardRequestDto.Post postDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         postDto.setUserId(userId);
         Board mappedObj = boardMapper.toEntityFrom(postDto);
-        mappedObj.setUrl(requestURL);
+        mappedObj.setUrl(uriProperties.getAllowedOrigin());
         Board createdEntity = boardService.create(mappedObj);
         BoardResponseDto.Single responseDto = boardMapper.toSingleResponseDto(createdEntity);
 

@@ -1,6 +1,5 @@
-package com.example.juse.helper;
+package com.example.juse.helper.utils;
 
-import com.example.juse.helper.utils.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -57,4 +56,6 @@ public class UriBuildTest {
         new Random().nextBytes(b);
         return b;
     }
+
+
 }

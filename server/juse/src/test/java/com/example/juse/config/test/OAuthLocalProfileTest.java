@@ -1,6 +1,6 @@
 package com.example.juse.config.test;
 
-import com.example.juse.security.config.OAuthProperties;
+import com.example.juse.security.config.UriProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OAuthLocalProfileTest {
 
     @Autowired
-    OAuthProperties oAuthProperties;
+    UriProperties oAuthProperties;
 
     @Test
     public void shouldProfiledWithLocal_LocalPropertiesReturned() {

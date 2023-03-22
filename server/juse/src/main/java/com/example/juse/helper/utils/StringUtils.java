@@ -41,5 +41,9 @@ public class StringUtils {
 
     }
 
+    public static String createBoardRedirectUri(String url, Long id) {
+        return UriComponentsBuilder.fromHttpUrl(url).pathSegment("boards", "{id}").build(id).toString();
+    }
+
 
 }
