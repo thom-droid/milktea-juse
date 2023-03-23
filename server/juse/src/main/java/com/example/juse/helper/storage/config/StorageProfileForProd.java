@@ -10,7 +10,8 @@ import java.nio.file.Path;
 @Component
 public class StorageProfileForProd implements StorageProfile {
 
-    private final Path profilePath = Path.of("","home", "ec2-user", ".aws", "credentials");
+    private final Path profilePath = Path.of("/home", "ec2-user", ".aws", "credentials");
+
     @Override
     public ProfileFile getProfileFile() {
         return ProfileFile.builder()
@@ -21,6 +22,6 @@ public class StorageProfileForProd implements StorageProfile {
 
     @Override
     public String getProfilePath() {
-        return profilePath.toAbsolutePath().toString();
+        return profilePath.toString();
     }
 }
