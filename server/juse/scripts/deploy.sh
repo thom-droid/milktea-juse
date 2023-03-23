@@ -40,12 +40,13 @@ fi
 
 echo "> checking new application"
 
-#JAR_NAME=$(ls -tr $REPOSITORY/*.jar | grep -E '.*SNAPSHOT\.jar$')
-JAR_NAME=$(ls -tr $REPOSITORY/'.*SNAPSHOT\.jar$');
+#JAR_NAME=$(ls -tr $REPOSITORY/juse*-SNAPSHOT.jar | head -1);
+JAR_NAME=$(find $REPOSITORY -name "juse*-SNAPSHOT.jar" -print -quit);
 
-echo "> jar name: $JAR_NAME" >> $REPOSITORY/log/deploy.log
-
-echo "> grant permission to jar" >> $REPOSITORY/log/deploy.log
+{
+  echo "> jar name: $JAR_NAME
+  > grant permission to jar and run"
+} >> $REPOSITORY/log/deploy.log
 
 chmod +x "$JAR_NAME"
 
