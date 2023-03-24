@@ -50,6 +50,13 @@ jobs:
         chmod +x ./gradlew
         ./gradlew build
 
+    - name: Upload test report
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: build/test-results/junit/junit.xml
+
     - name: Compress to zip
       run: |
         pwd

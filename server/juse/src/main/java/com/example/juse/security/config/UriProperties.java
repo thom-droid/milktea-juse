@@ -6,15 +6,17 @@ import org.springframework.stereotype.Component;
 
 @Getter
 @Component
-public class OAuthProperties {
+public class UriProperties {
 
     @Value("${oauth.requestUri.google}")
-    String googleRequestUri;
+    private String googleRequestUri;
 
     @Value("${oauth.requestUri.github}")
-    String githubRequestUri;
+    private String githubRequestUri;
 
     @Value("${oauth.redirectUri}")
-    String redirectUrl;
+    private String redirectUrl;
 
+    @Value("${cors.allowed-origin}")
+    private String allowedOrigin;
 }

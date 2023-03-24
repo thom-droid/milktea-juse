@@ -8,7 +8,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
 public class ConfigDataEnvironmentTest {

@@ -68,3 +68,10 @@ tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
 }
+
+test {
+	reports {
+		junitXml.enabled = true
+		junitXml.destination = file("${buildDir}/test-results/junit/junit.xml")
+	}
+}
