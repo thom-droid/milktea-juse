@@ -11,25 +11,25 @@
 좋은 소프트웨어 엔지니어가 되기 위해서는 주니어부터 시니어가 되기까지, 또한 시니어가 되어서도 학습과 고민을 멈추어선 안되겠죠.
 
 그러나 방대한 지식을 혼자 습득 하는 것은 어려울 수 있습니다. 같은 목적을 가진 사람들과 함께 한다면 더 빨리, 많이 배울 수 있다고 생각한 것이 JUSE의 출발점입니다.
-<br/>
-
-> 개발 기간: 2022.09.07 - 2022.10.12 (5주, 팀 프로젝트) </br>
-> 추가 개발: 2022.11.01 - 현재 (개인 프로젝트)
 </br>
 
-v1는 프로젝트 기간 내에 프론트, 백엔드 팀이 함께 작업한 버전입니다.
+> 개발 기간: 2022.09.07 - 2022.10.12 (5주, 팀 프로젝트), v1.1 ~ v1.3 </br>
+> 추가 개발: 2022.11.01 - 현재 (개인 프로젝트), 2.1.1 ~ 2.1.5
 </br>
-v2는 프로젝트 기간 이후 개인적으로 추가 작업을 실시한 버전입니다.
+
+v1.x는 프로젝트 기간 내에 프론트, 백엔드 팀이 함께 작업한 버전입니다.
+</br>
+v2.x는 프로젝트 기간 이후 개인적으로 추가 작업을 실시한 버전입니다.
 
 
 ## 배포
 
 - 현재 최신 버전: v2.1.5
-- 배포 버전 별 내역은 [release note](https://github.com/thom-droid/milktea-juse/wiki/Release-Note) 에서 확인할 수 있습니다.
+- 배포 버전 별 내역은 [release note](https://github.com/thom-droid/milktea-juse/wiki/Release-Note-v1.x#v110) 에서 확인할 수 있습니다.
 
 ## 서버 구성
 
-### v1
+### v1.x
 <details>
 <summary> 상세보기 </summary>
 <img src='materials/juse_architecture_v1.png'>
@@ -44,7 +44,7 @@ HTTPS 통신을 하기 위해 무료 도메인 및 SSL 인증서를 제공하는
 </details>
 
 
-### v2
+### v2.x.x
 
 v2부터는 클라우드 서비스로 서버 구성이 변경되었습니다. 
 
@@ -81,8 +81,12 @@ EC2 인스턴스에서 실행되는 애플리케이션에서 작업을 요청하
 </br>
 <img src='materials/juse_oauth2_social_login.jpg'>
 
-클라이언트 앱(리액트 앱)에서 유저 정보 동의를 얻으면 백엔드 앱(스프링 앱)으로 지정된 주소로 요청을 보냅니다. </br>
-스프링에서는 구글, 깃헙의 인가 서버에 설정해놓은 리다이렉션 URI로 인가 코드를 요청하고, 이 코드를 통해 실제 유저 정보를 가지고 있는 구글, 깃헙의 리소스 서버에 접근할 수 있는 접근 토큰을 얻어옵니다. </br>
+클라이언트 앱(리액트 앱)에서 유저 정보 동의를 얻으면 백엔드 앱(스프링 앱)으로 지정된 주소로 요청을 보냅니다.
+</br>
+</br>
+스프링에서는 구글, 깃헙의 인가 서버에 설정해놓은 리다이렉션 URI로 인가 코드를 요청하고, 이 코드를 통해 실제 유저 정보를 가지고 있는 구글, 깃헙의 리소스 서버에 접근할 수 있는 접근 토큰을 얻어옵니다.
+</br>
+</br>
 이 토큰을 통해 지정된 범위만큼의 정보(이메일, 프로필 사진 주소 등)를 리소스 서버에서 얻어옵니다. 정보를 얻어오는 데 성공하면 JWT를 발급하여 프론트로 전달합니다.
 </br>
 </br>
@@ -94,13 +98,12 @@ MVC 패턴과 레이어드 아키텍처를 활용한 모놀리식 구조를 가�
 </br>
 모든 컴포넌트가 하나의 애플리케이션 내부에 포함되어 있으므로 코드 간의 종속성이 높지만, 유지보수와 테스트, 디버깅, 배포가 비교적 수월하다는 장점이 있습니다. 전통적인 웹 개발 방식이므로 레퍼런스가 풍부하고, 트래픽이 많지 않은 프로젝트에 도입하기 적합하였습니다.    
 </br>
-</br>
 
 ## DB 
 
 <img src='materials/juse_database_scheme.png'>
 
-외래키를 통해 N:1, N:M 등의 테이블의 관계를 표현하였고, 팀원과의 논의를 통해 정규화를 적용해보았습니다. 
+외래키를 통해 N:1, N:M 등의 테이블의 관계를 표현하였고, 팀원과의 논의를 통해 정규화를 적용하였습니다. 
 </br>
 </br>
 프로젝트 초반 단계에서는 h2 와 hibernate 설정으로 스키마를 자동 생성되도록 하여 동작 여부를 확인하였습니다. 실제 개발 단계에서는 MySQL workbench를 통해 스키마를 작성한 뒤 로컬 서버를 통해 작업하였습니다.
@@ -109,12 +112,16 @@ MVC 패턴과 레이어드 아키텍처를 활용한 모놀리식 구조를 가�
 
 ### 트랜잭션 관리
 Spring에서 지원하는 어노테이션 기반으로 트랜잭션을 관리하였습니다. MySQL 8.0의 기본엔진인 InnoDB의 디폴트 설정(repeatable read)를 사용하였습니다. 각 트랜잭션에 식별 번호를 부여하여 해당 트랜잭션이 작업하고 있는 레코드가 다른 트랜잭션에 영향을 미치지 않습니다.   
-
+</br>
 #### 동기 작업
 
-서비스 레이어에서 트랜잭션들의 순서를 지정하고 하나의 트랜잭션으로 처리하기 위한 작업에 사용하였습니다. </br> 
-`@Transactional`의 기본설정인 `Propagation.REQUIRED` 를 통해 해당 메서드에 포함되어 있는 작업들이 한 스레드로 묶여 하나의 트랜잭션으로 수행됩니다. (직접 설정한 객체 그래프가 아닌 JPA 프록시 객체를 사용하는 경우에도 설정해주었습니다) 
-</br> 따라서 해당 메서드를 실행 중 예외가 발생하게 되면 커밋이 되지 않고 롤백이 됩니다. 
+서비스 레이어에서 트랜잭션들의 순서를 지정하고 하나의 트랜잭션으로 처리하기 위한 작업에 사용하였습니다.
+</br>
+</br>
+`@Transactional`의 기본설정인 `Propagation.REQUIRED` 를 통해 해당 메서드에 포함되어 있는 작업들이 한 스레드로 묶여 하나의 트랜잭션으로 수행됩니다 (직접 설정한 객체 그래프나 DTO가 아닌 JPA 프록시 객체를 사용하는 경우에도 세션 유지가 필요하므로 설정해준 부분도 있습니다).
+</br>
+</br>
+따라서 해당 메서드를 실행 중 예외가 발생하게 되면 커밋이 되지 않고 롤백이 됩니다 (롤백 정책은 `@Transactional`의 기본 설정으로 하여, 런타임 예외(unchecked exception) 발생 시 롤백이 수행됩니다). 
 
 ```java
 public class BoardServiceImpl {
@@ -134,30 +141,201 @@ public class BoardServiceImpl {
 }
 
 ```
+<br>
 
 #### 비동기 작업 (이벤트 처리)
 특정 작업 후 알림이 발행되는 이벤트의 경우 앞의 작업이 완료된 후 실행되어야 하고, 알림 발행 자체가 동기적으로 진행될 필요가 없으므로 트랜잭션이 커밋된 후 비동기 스레드로 응답하도록 설정하였습니다.
 
 ```java
+@Service
+public class ApplicationServiceImpl implements ApplicationService {
+    
+    @Override
+    @Transactional
+    public Appilcation create(Application obj) {
+        
+        // ... obj 유효성 검증 코드
+        
+        // 알림 객체 생성 및 엔티티 persist
+        Notification notification = Notification.of(Type.NEW_APPLICATION, obj.getUser(), obj.getUrl());
+        Application application = applicationRepository.save(obj);
+        
+        // 이벤트 발행
+        eventPublisher.publishEvent(new NotificationEvent(this, notification));
+        
+        return application;
+    }
+}
+
 @EnableAsync
 @Component
 public class NotificationEventListener {
     
     private final NotificationService notificationService;
     
+    // 트랜잭션 커밋 후 비동기 스레드에서 처리 및 응답
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleNotificationEvent(NotificationEvent event) {
         Notification notification = event.getEvent();
         notificationService.send(notification);
     }
-} 
+}
+```
+<br>
+<br>
+
+## 예외 처리
+
+Spring AOP에서 지원하는 `@RestControllerAdvice`를 통해 스프링 컨테이너 내 핸들러 메서드를 호출하면서 발생한 런타임 예외를 에스팩트로 간주하고 처리합니다. 
+`@RestControllerAdvice`는 모든 컨트롤러에 어드바이스로 적용되는 `@ControllerAdvice`의 응답을 `@ResponseBody`를 통해 json으로 작성할 수 있도록 해줍니다.
+따라서 애플리케이션 관점에서 다른 컨트롤러 메서드와 같이 일관적인 응답 작성이 가능해집니다. 이 때 응답의 내용은 `ExceptionResponse`를 통해 채워집니다. 
+</br>
+</br>
+컨트롤러 어드바이스에서 감지한 예외는 그 예외의 타입에 따라 `@ExceptionHandler`를 통해 처리됩니다. 
+해당 애플리케이션에서는 핸들러 메서드의 아규먼트가 잘못되었거나, 입력된 값이 엔티티 유효성 검사를 통과하지 못하거나, 저희가 지정한 커스텀 예외가 발생한 경우를 처리하도록 지정하였습니다. 
+</br>
+</br>
+ 
+
+``` java
+@RestControllerAdvice
+public class GlobalExceptionAdvice {
+
+    @ExceptionHandler(CustomRuntimeException.class) // 커스텀 예외 발생 처리 
+    public ExceptionResponse handleCustomRuntimeException(CustomRuntimeException customRuntimeException) {
+
+        return ExceptionResponse.of(customRuntimeException);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class) // 잘못된 컨트롤러 메서드 인자로 발생한 예외 처리
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handlerMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+
+        return ExceptionResponse.of(exception.getBindingResult());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class) // 엔티티 유효성 검사에 실패했을 때 예외 처리
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionResponse handlerConstraintViolationException(ConstraintViolationException exception) {
+
+        return ExceptionResponse.of(exception.getConstraintViolations());
+    }
+}
+
+```
+<br>
+<br>
+
+
+## 테스트
+
+테스트는 필요에 따라 유닛 테스트, 슬라이스, 통합 테스트를 진행하였습니다.
+
+`@TestComponent`와 `@TestPropertySource`를 활용하여 테스트에서만 필요한 환경을 설정하여 어떤 환경에서도 동작할 수 있도록 하였습니다.
+
+```java
+@RecordApplicationEvents
+@TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
+@Import(TestDBInstance.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+class ApplicationControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @Autowired
+    private ApplicationRepository applicationRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Test
+    public void test(){
+        //...
+    }
+}
+
+@RequiredArgsConstructor
+@TestConfiguration
+public class TestDBInstance {
+    
+    private final UserRepository userRepository;
+    
+    @Bean
+    public void populate(){
+        User user = User.builder().email("test1").build();
+        userRepository.save(user);
+    }
+}
+
+```
+</br>
+
+테스트하고자 하는 기능에 집중하기 위해 mockito를 통해 필요 없는 의존성은 mocking 하여 테스트하였습니다.
+실제 메서드가 호출 될 때 mocking 객체가 이를 가로채 사용자가 지정한 메서드를 수행합니다.  
+
+```java
+@ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc
+@ContextConfiguration(classes = {UserServiceImpl.class})
+@SpringBootTest
+public class UserServiceTest {
+
+    @MockBean
+    private StorageSevice storageSevice;
+    
+    @MockBean
+    private TagService tagService;
+    
+    @MockBean
+    private UserRepository userRepository;
+    
+    @Test
+    public void givenMultipartFile_whenUserCreated_thenSuccess() throws IOException {
+        
+        given(storageService.store(Mockito.any(MultipartFile.class))).willReturn("savedFileName");
+        given(tagService.findByName(Mockito.anyString())).willReturn(Mockito.mock(Tag.class));
+        given(userRepository.save(Mockito.any(User.class))).willReturn(testUser);
+
+        //when
+        User createdUser = userService.createUser(testUser, mockMultipartFile);
+
+        //then
+        assertEquals(testUser.getImg(), createdUser.getImg());
+        assertEquals(testUser.getMyImg(), createdUser.getMyImg());
+
+    }
+
+}
 
 ```
 
-## 예외 처리
-알림기능
-테스트
+<br>
+
+
+스프링 컨텍스트틑 사용하여야 하더라도 필요한 컨텍스트만 로드하여 테스트 오버헤드를 줄일 수 있도록 했습니다.
+
+```java
+@ContextConfiguration(classes = AppKeyConfig.class)
+@SpringBootTest(properties = "jwt.secret=${random.uuid}")
+public class AppKeyConfigTest {
+
+    @Autowired
+    SecretKeyHolder secretKeyHolder;
+
+    @Test
+    public void JwtSecretKeyFinal() {
+        String key = secretKeyHolder.getSecretKey();
+        String key2 = secretKeyHolder.getSecretKey();
+
+        Assertions.assertEquals(key, key2);
+    }
+}
+```
+<br>
+
 
 
 
@@ -199,7 +377,11 @@ public class NotificationEventListener {
 ![Apache Tomcat](https://img.shields.io/badge/Apache_Tomcat-9.0-%23F8DC75.svg?style=flat)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-005C84?style=flat)
 </br>
-![AWS SDK](https://img.shields.io/badge/AWS_SDK-2.0-blue.svg?style=flat&logoColor=white)
+![Spring Boot Test](https://img.shields.io/badge/Spring_Boot_Test-2.7.3-6DB33F?style=flat)
+![JUnit](https://img.shields.io/badge/JUnit-5.8.2-005C84?style=flat)
+![Mockito](https://img.shields.io/badge/Mockito-4.5.1-red?style=flat)
+</br>
+![AWS SDK](https://img.shields.io/badge/AWS_SDK-2.20.17-blue.svg?style=flat&logoColor=white)
 ![AWS](https://img.shields.io/badge/EC2-orange.svg?style=flat)
 ![AWS](https://img.shields.io/badge/CloudFront-blueviolet.svg?style=flat)
 ![AWS](https://img.shields.io/badge/ALB-yellow.svg?style=flat&logoColor=white)

@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RecordApplicationEvents
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
 @Import(TestDBInstance.class)
-@SpringBootTest()
+@SpringBootTest
 @AutoConfigureMockMvc
 class ApplicationControllerTest {
 
@@ -75,6 +75,7 @@ class ApplicationControllerTest {
         initJwtToken();
         destroy();
     }
+
     public void initJwtToken() {
 
         TokenDto token = jwtTokenProvider.generateToken("test2@gmail.com", "ROLE_MEMBER");
@@ -123,7 +124,6 @@ class ApplicationControllerTest {
         });
 
     }
-
 
     @Test
     void givenApplicationId_whenAccept_thenDoesStatusUpdateAndNotificationIsSent() throws Exception {
@@ -208,6 +208,5 @@ class ApplicationControllerTest {
         assertEquals(expectedType, notification.getType());
         assertEquals(expectedMessage, notification.getType().getMessage());
         assertEquals(board.getUrl(), notification.getRelatedURL());
-
     }
 }
