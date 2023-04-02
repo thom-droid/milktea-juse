@@ -305,9 +305,7 @@ public class UserServiceTest {
         //then
         assertEquals(testUser.getImg(), createdUser.getImg());
         assertEquals(testUser.getMyImg(), createdUser.getMyImg());
-
     }
-
 }
 
 ```
