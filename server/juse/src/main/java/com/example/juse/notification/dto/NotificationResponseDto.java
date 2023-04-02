@@ -12,12 +12,14 @@ import lombok.Setter;
 @Setter
 public class NotificationResponseDto {
 
+    private Long id;
     private Notification.Type type;
     private String message;
     private String relatedURL;
     private boolean isRead;
 
     public NotificationResponseDto(Notification notification) {
+        this.id = notification.getId();
         this.type = notification.getType();
         this.message = notification.getMessage();
         this.relatedURL = notification.getRelatedURL();

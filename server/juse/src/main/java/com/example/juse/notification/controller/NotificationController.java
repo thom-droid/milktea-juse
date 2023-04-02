@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -33,7 +32,6 @@ public class NotificationController {
 
     private final NotificationService notificationService;
     private final NotificationMapper notificationMapper;
-
 
     @GetMapping(value = "/event-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter createEventStream(@AuthenticationPrincipal PrincipalDetails principalDetails,
@@ -49,7 +47,6 @@ public class NotificationController {
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "isRead", defaultValue = "false") Boolean isRead
-
     ) {
         Long userId = principalDetails.getSocialUser().getUser().getId();
 

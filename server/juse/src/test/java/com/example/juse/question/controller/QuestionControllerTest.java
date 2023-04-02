@@ -1,6 +1,6 @@
 package com.example.juse.question.controller;
 
-import com.example.juse.config.TestDBInstance;
+import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.event.NotificationEvent;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
-@Import(TestDBInstance.class)
+@Import(IntegrationTestDBInstance.class)
 @RecordApplicationEvents
 @AutoConfigureMockMvc
 @SpringBootTest

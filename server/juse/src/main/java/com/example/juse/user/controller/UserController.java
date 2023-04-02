@@ -88,9 +88,6 @@ public class UserController {
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails
 
     ) {
-        log.info("principal: {}", principalDetails);
-        log.info("social users: {}", principalDetails.getSocialUser());
-        log.info("user: {}", principalDetails.getSocialUser().getUser());
         long userId = principalDetails.getSocialUser().getUser().getId();
 
         User userProfile = userService.getProfile(userId);

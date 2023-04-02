@@ -1,6 +1,6 @@
 package com.example.juse.notification.service;
 
-import com.example.juse.config.TestDBInstance;
+import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;
@@ -13,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
-@Import(TestDBInstance.class)
+@Import(IntegrationTestDBInstance.class)
 @SpringBootTest
 class NotificationServiceTest {
 

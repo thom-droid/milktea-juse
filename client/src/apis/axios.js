@@ -314,4 +314,8 @@ export const apis = {
       pagination.page === pagination.totalPages || pagination.totalPages === 0;
     return { data, isLast, nextPage: page + 1 };
   },
+
+  getNotifications: async (token) => {
+      const response = await axios.get()
+  }
 };
