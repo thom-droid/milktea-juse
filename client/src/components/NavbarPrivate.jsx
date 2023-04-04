@@ -14,8 +14,11 @@ import useDetectClose from '../hooks/useDetectClose';
 import {ReactComponent as Sun} from '../assets/icons/sun.svg';
 import {ReactComponent as Moon} from '../assets/icons/moon.svg';
 
+import axios from 'axios';
+
 const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
   const [cookies] = useCookies();
+  const token = cookies.user;
   const uuid = cookies.userUuid;
   const userProfileImage = cookies.userProfileImage;
   const [imageSrc, setImageSrc] = useState('/icons/img/user-default.png');
@@ -24,12 +27,19 @@ const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
   // dropdown 외부 클릭 감지
   const profileDropdownRef = useRef(null);
   const [isProfileDropDownOpen, setProfileDropDownOpen] = useDetectClose(profileDropdownRef, false);
+
+  // notification dropdown box
   const notificationDropDownRef = useRef(null);
   const [isNotificationDropDownOpen, setNotificationDropDownOpen] = useDetectClose(notificationDropDownRef, false);
 
+  //notification list
+  const [notificationList, setNotificationList] = useState([]);
+
+  // notification popup modal
   const [notification, setNotification] = useState(null);
   const [notificationModal, setNotificationModal] = useState(false);
 
+  // notification modal setup when new message is made
   useEffect(() => {
     if(notification){
       console.log(`notification: ${notification}`)
@@ -40,6 +50,21 @@ const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
       }, 10000);
     }
   }, [notification]);
+
+  // set user profile image and connect to event stream
+  useEffect(() => {
+    setImageSrc(userProfileImage);
+    connect(uuid);
+
+    axios.get(`${API_BASE_URL}/notifications/nav`, { headers: { "Auth" : token} } )
+        .then((response) => {
+            setNotificationList(response.data.data);
+        })
+        .catch((error) => {
+            console.log(error);
+    })
+  }, []);
+
 
   function connectToStream(streamUrl) {
     let request, sse;
@@ -91,20 +116,14 @@ const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
       return null;
     }
 
-    const streamUrl = API_BASE_URL.concat(`/notification-test/event-stream/${uuid}`);
+    const streamUrl = API_BASE_URL.concat(`/notification/event-stream/${uuid}`);
     connectToStream(streamUrl);
   }
-
-  useEffect(() => {
-    setImageSrc(userProfileImage);
-    connect(uuid);
-  }, []);
 
   const handleLogout = () => {
     removeCookie('user', { path: '/' });
     removeCookie('userId', { path: '/' });
     navigate('/');
-
   };
 
   return (
@@ -122,24 +141,30 @@ const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
                 </LightThemeBtn>
             )}
             <Notification
-                // ref={notificationDropDownRef}
-                // onClick={() => {
-                //    setNotificationDropDownOpen(!isNotificationDropDownOpen);
-                // }}
+                ref={notificationDropDownRef}
+                onClick={() => {
+                   setNotificationDropDownOpen(!isNotificationDropDownOpen);
+                   console.log(notificationList);
+                }}
             >
-              {/*{isNotificationDropDownOpen ? (*/}
-              {/*    <NotificationDropDown>*/}
-              {/*      {notification.slice(0, 5).map((content, index) => (*/}
-              {/*          <NotificationContent to={content.relatedURL}>*/}
-              {/*            <div key={index}>*/}
-              {/*              <p>{content.message}</p>*/}
-              {/*            </div>*/}
-              {/*          </NotificationContent>*/}
-              {/*      ))*/}
-              {/*      }*/}
-              {/*    </NotificationDropDown>*/}
-              {/*) : ('')}*/}
-              {notification === null ? (
+              {isNotificationDropDownOpen ? (
+                notificationList.length === 0 ? (
+                <EmptyNotificationDropDown>
+                  <p>모든 알림을 읽었습니다.</p>
+                </EmptyNotificationDropDown>
+                ) : (
+                  <NotificationDropDown>
+                    {notificationList.map((content, index) => (
+                      <NotificationContent to={content.relatedURL} key={index}>
+                        <div>
+                          <p>{content.message}</p>
+                        </div>
+                      </NotificationContent>
+                    ))}
+                  </NotificationDropDown>
+                )
+              ) : null}
+              {notificationList.length === 0 ? (
                   <NotificationIcon
                       width='28px'
                       height='28px'
@@ -231,10 +256,23 @@ const NotificationDropDown = styled.nav`
   border-radius: 8px;
   position: absolute;
   top: 80px;
-  right: 150px;
+  right: 0px;
   width: 500px;
   box-shadow: 0 1px 8px ${({theme}) => theme.colors.grey2};
   z-index: 999;
+`;
+
+const EmptyNotificationDropDown = styled.div`
+  background: ${({theme}) => theme.background};
+  border-radius: 8px;
+  position: absolute;
+  top: 80px;
+  right: 0px;
+  width: 350px;
+  box-shadow: 0 1px 8px ${({theme}) => theme.colors.grey2};
+  color: black;
+  z-index: 999;
+  padding: 10px 10px;
 `;
 
 const NotificationContent = styled(Link)`

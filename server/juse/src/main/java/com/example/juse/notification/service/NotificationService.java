@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -50,6 +51,10 @@ public class NotificationService {
 
     public Page<Notification> getNotificationList(Long userId, Boolean isRead, Pageable pageable) {
         return notificationRepository.findByReceiverIdAndIsRead(userId, isRead, pageable);
+    }
+
+    public List<Notification> getNotificationForNav(Long userId){
+        return notificationRepository.findTop5ByReceiverIdOrderByCreatedAtDesc(userId);
     }
 
     public Notification getNotification(Long notificationId) {
