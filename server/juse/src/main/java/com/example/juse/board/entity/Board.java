@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -129,7 +130,6 @@ public class Board extends Auditing {
         }
     }
 
-
     public boolean isCreatedBy(long userId) {
         return this.user.getId() == userId;
     }
@@ -143,30 +143,48 @@ public class Board extends Auditing {
     }
 
     public boolean isPositionAvailable(String position) {
-
         if (this.type == Type.PROJECT) {
             if (position.equals("backend")) {
                 return backend > curBackend;
             }
-
-            if (position.equals("front")) {
+            if (position.equals("frontend")) {
                 return frontend > curFrontend;
             }
-
             if (position.equals("designer")) {
                 return designer > curDesigner;
             }
-
             if (position.equals("etc")) {
                 return etc > curEtc;
             }
-
         } else {
-
             return people > curPeople;
         }
-
         return false;
+    }
 
+    public void incrementPositionCount(String position) {
+        if (position.equals("backend")) {
+            curBackend++;
+        }
+        if (position.equals("frontend")) {
+            curFrontend++;
+        }
+        if (position.equals("designer")) {
+            curDesigner++;
+        }
+        if (position.equals("etc")) {
+            curEtc++;
+        }
+        if (position.equals("people")) {
+            curPeople++;
+        }
+    }
+
+    public void incrementBookmarkCount() {
+        this.bookmarks++;
+    }
+
+    public boolean checkDuplicatedApplicant(Long applicantId) {
+        return this.applicationList.stream().anyMatch(application -> Objects.equals(application.getUser().getId(), applicantId));
     }
 }

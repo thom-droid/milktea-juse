@@ -5,8 +5,9 @@ import com.example.juse.application.dto.ApplicationResponseDto;
 import com.example.juse.application.entity.Application;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ApplicationMapper {
 
     @Mapping(target = "user.id", source = "userId")

@@ -17,6 +17,7 @@ public class NotificationResponseDto {
     private String message;
     private String relatedURL;
     private boolean isRead;
+    private Long boardId;
 
     public NotificationResponseDto(Notification notification) {
         this.id = notification.getId();
@@ -24,6 +25,7 @@ public class NotificationResponseDto {
         this.message = notification.getMessage();
         this.relatedURL = notification.getRelatedURL();
         this.isRead = notification.isRead();
+        this.boardId = notification.getBoardId();
     }
 
 }

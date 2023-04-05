@@ -78,13 +78,13 @@ const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
 
         try {
           const tmp = JSON.parse(evt.data);
-          let url = tmp.relatedURL + '';
-          const boardId = url.substring(url.lastIndexOf('/')+1);
+//           let url = tmp.relatedURL + '';
+//           const boardId = url.substring(url.lastIndexOf('/')+1);
           const data = () => {
             return {
               id: tmp.id,
               message: tmp.message,
-              boardId: boardId
+              boardId: tmp.boardId
             };
           }
           setNotification(data);
@@ -155,7 +155,7 @@ const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
                 ) : (
                   <NotificationDropDown>
                     {notificationList.map((content, index) => (
-                      <NotificationContent to={content.relatedURL} key={index}>
+                      <NotificationContent to={`boards/${content.boardId}`} key={index}>
                         <div>
                           <p>{content.message}</p>
                         </div>
@@ -225,7 +225,7 @@ const Notification = styled.div`
 `;
 
 const NotificationModal = styled(Link)`
-  width: 300px;
+  width: 350px;
   height: 75px;
   text-align: center;
   position: fixed;
@@ -236,7 +236,7 @@ const NotificationModal = styled(Link)`
   background-color: ${({ theme }) => theme.colors.purple1};
   padding: 30px;
   opacity: 1;
-  font-size: 18px;
+  font-size: 14px;
   animation: ${({ hidden }) => hidden ? fadeOut : fadeIn} 0.5s ease-in-out;
   border-radius: 8px;
   color: white;

@@ -1,5 +1,6 @@
 package com.example.juse.notification.service;
 
+import com.example.juse.board.entity.Board;
 import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.user.entity.User;
@@ -25,9 +26,9 @@ class NotificationServiceTest {
 
     @Test
     public void givenNotification_whenSendInvoked_thenNotificationDoesNotThrow() {
-
         User receiver = userRepository.findByEmail("test1@gmail.com");
-        Notification notification = Notification.of(Notification.Type.NEW_REPLY, receiver, "http://localhost:8080/board/1");
+        Board board = Board.builder().id(1L).title("board1").build();
+        Notification notification = Notification.of(Notification.Type.NEW_REPLY, receiver, board);
 
         assertDoesNotThrow(() -> notificationService.send(notification));
 

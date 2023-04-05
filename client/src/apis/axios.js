@@ -205,7 +205,7 @@ export const apis = {
   postApply: async (token, boardId, position) => {
     await axios
       .post(
-        `${API_BASE_URL}/applications/${boardId}?position=${position}`,
+        `${API_BASE_URL}/apply/board/${boardId}?position=${position}`,
         {},
         {
           headers: {
@@ -219,7 +219,7 @@ export const apis = {
   patchAccept: async (token, applicationId) => {
     await axios
       .patch(
-        `${API_BASE_URL}/applications/${applicationId}`,
+        `${API_BASE_URL}/accept/application/${applicationId}`,
         {},
         {
           headers: {
@@ -232,8 +232,9 @@ export const apis = {
   },
   deleteDeny: async (token, applicationId) => {
     await axios
-      .delete(
-        `${API_BASE_URL}/applications/${applicationId}`,
+      .patch(
+        `${API_BASE_URL}/deny/application/${applicationId}`,
+        {},
         {
           headers: {
             Auth: token,

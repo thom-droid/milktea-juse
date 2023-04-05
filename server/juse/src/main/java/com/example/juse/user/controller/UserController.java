@@ -67,8 +67,6 @@ public class UserController {
 
         long userId = principalDetails.getSocialUser().getUser().getId();
 
-        System.out.println("userId = " + principalDetails.getSocialUser().getUser().getId());
-
         User foundUser = userService.getJuse(userId);
         UserResponseDto.MyJuse responseDto = userMapper.toMyJuseDtoFrom(foundUser);
 

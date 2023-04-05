@@ -10,7 +10,7 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
 uses = {ApplicationMapper.class, QuestionMapper.class, TagMapper.class})
 public interface BoardMapper {
 
