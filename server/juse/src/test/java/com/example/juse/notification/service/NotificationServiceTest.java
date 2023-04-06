@@ -3,6 +3,7 @@ package com.example.juse.notification.service;
 import com.example.juse.board.entity.Board;
 import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.notification.entity.Notification;
+import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,9 @@ class NotificationServiceTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
     @Test
     public void givenNotification_whenSendInvoked_thenNotificationDoesNotThrow() {
         User receiver = userRepository.findByEmail("test1@gmail.com");
@@ -31,7 +35,5 @@ class NotificationServiceTest {
         Notification notification = Notification.of(Notification.Type.NEW_REPLY, receiver, board);
 
         assertDoesNotThrow(() -> notificationService.send(notification));
-
     }
-
 }

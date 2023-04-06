@@ -7,6 +7,7 @@ import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.mapper.NotificationMapper;
 import com.example.juse.notification.service.NotificationService;
 import com.example.juse.security.oauth.PrincipalDetails;
+import com.example.juse.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class NotificationController {
     private final NotificationMapper notificationMapper;
 
     @GetMapping(value = "/notification/event-stream/{uuid}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter createEventStream(@PathVariable(value="uuid") String userUUID,
+    public SseEmitter createEventStream(@PathVariable(value = "uuid") String userUUID,
                                         @RequestHeader(value = "Last-Event-ID", required = false) String lastEventId) {
         return notificationService.createEventStream(userUUID, lastEventId);
 
@@ -66,5 +67,15 @@ public class NotificationController {
         List<NotificationResponseDto> notificationResponseDtos = notificationMapper.mapToDtoListFromEntityList(notificationList);
 
         return new ResponseEntity<>(new MultiResponseDto<>(notificationResponseDtos, null), HttpStatus.OK);
+    }
+
+    @PatchMapping("/notifications/{notification-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateNotificationAsRead(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("notification-id") Long notificationId
+    ) {
+        User user = principalDetails.getSocialUser().getUser();
+        notificationService.setNotificationAsRead(user, notificationId);
     }
 }

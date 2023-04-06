@@ -4,6 +4,7 @@ import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
 import lombok.*;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
@@ -90,5 +91,12 @@ public class Notification extends Auditing {
         }
 
         return str.substring(0, 6).concat("...");
+    }
+
+    public void setAsRead() {
+        this.isRead = true;
+    }
+
+    public void setNotificationAsRead(User user, Long notificationId) {
     }
 }

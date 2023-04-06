@@ -131,5 +131,4 @@ public class User extends Auditing {
             socialUser.setUser(this);
         }
     }
-
 }

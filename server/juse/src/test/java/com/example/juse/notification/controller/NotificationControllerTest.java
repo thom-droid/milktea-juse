@@ -1,5 +1,6 @@
 package com.example.juse.notification.controller;
 
+import com.example.juse.board.entity.Board;
 import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.repository.NotificationRepository;
@@ -17,8 +18,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,17 +46,6 @@ class NotificationControllerTest {
     @Autowired
     NotificationRepository notificationRepository;
 
-//    @Test
-//    void givenURL_thenControllerDoesNotThrowException() throws Exception {
-//
-//        String url = "http://localhost:8080/notification/event-stream";
-//        TokenDto tokenDto = jwtTokenProvider.generateToken("test1@gmail.com", "ROLE_MEMBER");
-//        String token = tokenDto.getAccessToken();
-//
-//        assertDoesNotThrow(() -> mockMvc.perform(get(url + "/{uuid}", ).header("Auth", token)));
-//
-//    }
-
     @Test
     void getNotificationListForNav() throws Exception {
 
@@ -59,9 +53,10 @@ class NotificationControllerTest {
         User user = userRepository.findByEmail("test1@gmail.com");
         String url = "http://localhost:8080/notifications/nav";
         String token = jwtTokenProvider.generateToken(user.getEmail(), "ROLE_MEMBER").getAccessToken();
+        Board board = Board.builder().id(1L).user(user).title("board1").build();
 
         for (int i = 0; i < 10; i++) {
-            Notification notification = Notification.of(Notification.Type.NEW_APPLICATION, user, null);
+            Notification notification = Notification.of(Notification.Type.NEW_APPLICATION, user, board);
             notificationRepository.save(notification);
         }
 
@@ -71,5 +66,27 @@ class NotificationControllerTest {
         //then
         resultActions.andExpect(status().isOk());
         resultActions.andDo(print());
+    }
+
+    @Test
+    void updateNotificationAsRead() throws Exception {
+        //given
+        User user = userRepository.findByEmail("test1@gmail.com");
+        String url = "http://localhost:8080/notifications";
+        String token = jwtTokenProvider.generateToken(user.getEmail(), "ROLE_MEMBER").getAccessToken();
+        Long notificationId = 1L;
+        Board board = Board.builder().id(1L).user(user).title("board1").build();
+        Notification notification = Notification.of(Notification.Type.APPLICATION_ACCEPT, user, board);
+        notificationRepository.save(notification);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                patch(url +"/{notificationId}", notificationId).header("Auth", token));
+
+        //then
+        resultActions.andExpect(status().isNoContent());
+        Optional<Notification> optionalNotification = notificationRepository.findById(1L);
+        assertTrue(optionalNotification.isPresent());
+        assertTrue(optionalNotification.get().isRead());
     }
 }
