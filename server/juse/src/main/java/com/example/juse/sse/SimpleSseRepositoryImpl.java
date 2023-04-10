@@ -58,6 +58,5 @@ public class SimpleSseRepositoryImpl<T> implements SseRepository<T> {
                     }
                 }
         );
-
     }
 }

@@ -17,11 +17,9 @@ public class AppKeyConfigTest {
 
     @Test
     public void JwtSecretKeyFinal() {
-
         String key = secretKeyHolder.getSecretKey();
         String key2 = secretKeyHolder.getSecretKey();
 
         Assertions.assertEquals(key, key2);
-
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ApplicationServiceImpl implements ApplicationService{
+public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final BoardRepository boardRepository;
@@ -28,22 +28,17 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Transactional
     public Application create(Application mappedObj) {
         long userId = mappedObj.getUser().getId();
-
         long boardId = mappedObj.getBoard().getId();
-
         Board board = boardService.verifyBoardById(boardId);
-
         String position = mappedObj.getPosition();
 
+        checkDuplicatedApplication(board, userId);
         checkPositionAvailability(board, position);
-        checkDuplicatedByUserIdAndBoardId(userId, boardId);
 
-        Notification notification = Notification.of(Notification.Type.NEW_APPLICATION, board.getUser(), board.getUrl());
-
+        Notification notification = Notification.of(Notification.Type.NEW_APPLICATION, board);
         Application application = applicationRepository.save(mappedObj);
 
         eventPublisher.publishEvent(new NotificationEvent(this, notification));
-
         return application;
     }
 
@@ -55,40 +50,18 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Override
     @Transactional
     public Application accept(long applicationId, long userId) {
-        Application findApply = findVerifiedApplication(applicationId);
+        Application foundApplication = findVerifiedApplication(applicationId);
+        Board board = boardService.verifyBoardById(foundApplication.getBoard().getId());
 
-        Board board = boardService.verifyBoardById(findApply.getBoard().getId());
-
-        findApply.checkApplicationWriter(userId);
-        checkPositionAvailability(board, findApply.getPosition());
-//        findApply.setAccepted(true);
-        findApply.setStatus(Application.Status.ACCEPTED);
-
-        // 수락을 눌렀을 때, 지원자의 각 포지션 카운트 증가 후 Board 테이블에 저장.
-        int curBack = board.getCurBackend();
-        int curFront = board.getCurFrontend();
-        int curDesign = board.getCurDesigner();
-        int curEtc = board.getCurEtc();
-
-        switch (findApply.getPosition()) {
-            case "backend":
-                board.setCurBackend(++curBack);
-                break;
-            case "frontend":
-                board.setCurFrontend(++curFront);
-                break;
-            case "designer":
-                board.setCurDesigner(++curDesign);
-                break;
-            case "etc":
-                board.setCurEtc(++curEtc);
-                break;
-        }
+        foundApplication.verifyBoardWriter(userId);
+        checkPositionAvailability(board, foundApplication.getPosition());
+        foundApplication.setStatusAsAccepted();
+        board.incrementPositionCount(foundApplication.getPosition());
 
         boardRepository.save(board);
 
-        Application application = applicationRepository.save(findApply);
-        Notification notification = Notification.of(Notification.Type.APPLICATION_ACCEPT, findApply.getUser(), board.getUrl());
+        Application application = applicationRepository.save(foundApplication);
+        Notification notification = Notification.of(Notification.Type.APPLICATION_ACCEPT, application.getUser(), board);
 
         eventPublisher.publishEvent(new NotificationEvent(this, notification));
 
@@ -98,29 +71,19 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Override
     @Transactional
     public void deny(long applicationId, long userId) {
-        Application findApply = findVerifiedApplication(applicationId);
-        findApply.checkApplicationWriter(userId);
+        Application foundApplication = findVerifiedApplication(applicationId);
+        foundApplication.verifyBoardWriter(userId);
 
-        // 거절을 눌렀을 때, 지원자의 각 포지션 카운트 감소 후 Board 테이블에 저장.
-//        int curBack = board.getCurBackend();
-//        int curFront = board.getCurFrontend();
-//        int curDesign = board.getCurDesigner();
-//        int curEtc = board.getCurEtc();
-//
-//        if (findApply.getPosition().equals("backend") && curBack > 0) board.setCurBackend(--curBack);
-//        else if(findApply.getPosition().equals("frontend") && curFront > 0) board.setCurFrontend(--curFront);
-//        else if(findApply.getPosition().equals("designer") && curDesign > 0) board.setCurDesigner(--curDesign);
-//        else if(findApply.getPosition().equals("etc") && curEtc > 0) board.setCurEtc(--curEtc);
+        foundApplication.setStatusAsDenied();
+        applicationRepository.save(foundApplication);
 
-//        boardRepository.save(board);
-
-        findApply.setStatus(Application.Status.DENIED);
-        applicationRepository.save(findApply);
-
-        Notification notification = Notification.of(Notification.Type.APPLICATION_DENIED, findApply.getUser(), findApply.getBoard().getUrl());
+        Notification notification =
+                Notification.of(
+                        Notification.Type.APPLICATION_DENIED,
+                        foundApplication.getUser(),
+                        foundApplication.getBoard());
 
         eventPublisher.publishEvent(new NotificationEvent(this, notification));
-
     }
 
     public Application findVerifiedApplication(long applicationId) {
@@ -129,21 +92,20 @@ public class ApplicationServiceImpl implements ApplicationService{
         );
     }
 
-    public Application findUserIdApplication(long userId) {
-        return applicationRepository.findById(userId).orElseGet(
-                Application::new
-        );
-    }
-
-    public void checkDuplicatedByUserIdAndBoardId(long userId, long boardId) {
-        if (applicationRepository.findByUserIdAndBoardId(userId, boardId).isPresent()) {
-            throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
-        }
-    }
-
     public void checkPositionAvailability(Board board, String position) {
         if (!board.isPositionAvailable(position)) {
             throw new CustomRuntimeException(ExceptionCode.APPLICATION_POSITION_UNAVAILABLE);
         }
     }
+
+    public void checkDuplicatedApplication(Board board, Long applicantId) {
+        if (board.checkDuplicatedApplicant(applicantId)) {
+            throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
+        }
+    }
+    // Todo 페이지 새로고침 시 이미지 경로 못 불러옴, sse 못불러옴 (useEffect 떄문에)
+    // 중간에 서버 꺼졌을 때 쿠키 없애고 새로고침 시켜야함
+    // 다른 기능들 다 테스트
+    // 알림 읽음 처리
+
 }

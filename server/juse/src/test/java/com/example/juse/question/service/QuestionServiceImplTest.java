@@ -1,6 +1,6 @@
 package com.example.juse.question.service;
 
-import com.example.juse.config.TestDBInstance;
+import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.question.dto.QuestionRequestDto;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.mapper.QuestionMapper;
@@ -12,7 +12,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
-@Import(TestDBInstance.class)
+@Import(IntegrationTestDBInstance.class)
 @SpringBootTest
 class QuestionServiceImplTest  {
 

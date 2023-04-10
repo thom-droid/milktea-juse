@@ -36,7 +36,6 @@ public class CustomSse<T> {
         return infoHolder;
     }
 
-
     private void setCallBackOption(SseEmitter sseEmitter, String emitterId) {
         sseEmitter.onCompletion(() ->
         {
@@ -74,5 +73,4 @@ public class CustomSse<T> {
     public void saveEventCache(String eventId, T event) {
         sseRepository.saveEvent(eventId, event);
     }
-
 }

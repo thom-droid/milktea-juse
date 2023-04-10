@@ -88,7 +88,7 @@ const Card = ({ data }) => {
       <Link to={`/boards/${data.id}`}>
         <CardSummary>
           <div className='date'>{`${data.startingDate} (${periodNaming(
-            data.period
+            data.periods
           )})`}</div>
           <p className='title'>{data.title}</p>
           <div className='tags-container'>

@@ -6,6 +6,7 @@ import { ReactComponent as Accept } from '../assets/icons/check-circle.svg';
 import { ReactComponent as Deny } from '../assets/icons/x-circle.svg';
 import theme from '../assets/styles/Theme';
 import { useMutation, useQueryClient } from 'react-query';
+import {useEffect} from 'react';
 
 const Application = ({ data }) => {
   const [cookies] = useCookies();
@@ -21,10 +22,10 @@ const Application = ({ data }) => {
       value: 'frontend',
       count: data.frontend,
       accepted: data.applicationList.filter(
-        (e) => e.position === 'frontend' && e.accepted === true
+        (e) => e.position === 'frontend' && e.status === 'ACCEPTED'
       ),
       pending: data.applicationList.filter(
-        (e) => e.position === 'frontend' && e.accepted === false
+        (e) => e.position === 'frontend' && e.status === 'ON_WAIT'
       ),
     },
     {
@@ -32,10 +33,10 @@ const Application = ({ data }) => {
       value: 'backend',
       count: data.backend,
       accepted: data.applicationList.filter(
-        (e) => e.position === 'backend' && e.accepted === true
+        (e) => e.position === 'backend' && e.status === 'ACCEPTED'
       ),
       pending: data.applicationList.filter(
-        (e) => e.position === 'backend' && e.accepted === false
+        (e) => e.position === 'backend' && e.status === 'ON_WAIT'
       ),
     },
     {
@@ -43,10 +44,10 @@ const Application = ({ data }) => {
       value: 'designer',
       count: data.designer,
       accepted: data.applicationList.filter(
-        (e) => e.position === 'designer' && e.accepted === true
+        (e) => e.position === 'designer' && e.status === 'ACCEPTED'
       ),
       pending: data.applicationList.filter(
-        (e) => e.position === 'designer' && e.accepted === false
+        (e) => e.position === 'designer' && e.status === 'ON_WAIT'
       ),
     },
     {
@@ -54,10 +55,10 @@ const Application = ({ data }) => {
       value: 'etc',
       count: data.etc,
       accepted: data.applicationList.filter(
-        (e) => e.position === 'etc' && e.accepted === true
+        (e) => e.position === 'etc' && e.status === 'ACCEPTED'
       ),
       pending: data.applicationList.filter(
-        (e) => e.position === 'etc' && e.accepted === false
+        (e) => e.position === 'etc' && e.status === 'ON_WAIT'
       ),
     },
     {
@@ -65,10 +66,10 @@ const Application = ({ data }) => {
       value: 'people',
       count: data.people,
       accepted: data.applicationList.filter(
-        (e) => e.position === 'people' && e.accepted === true
+        (e) => e.position === 'people' && e.status === 'ACCEPTED'
       ),
       pending: data.applicationList.filter(
-        (e) => e.position === 'people' && e.accepted === false
+        (e) => e.position === 'people' && e.status === 'ON_WAIT'
       ),
     },
   ];

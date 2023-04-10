@@ -101,9 +101,9 @@ const Answer = ({ data, auth, questionId }) => {
                 <Link to={`/users/${data.user.id}`}>
                   <p className='name'>{data.user.nickname}</p>
                 </Link>
-                <p className='date'>{`${
-                  data.createdAt.split('T')[0]
-                } ${data.createdAt.split('T')[1].slice(0, 5)}`}</p>
+                <p className='date'>
+                  {data.createdAt}
+                </p>
               </NameContainer>
             </UserInfo>
             <ContentButton>

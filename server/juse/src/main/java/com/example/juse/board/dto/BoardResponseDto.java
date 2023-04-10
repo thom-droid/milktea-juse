@@ -41,7 +41,7 @@ public class BoardResponseDto {
         private String contact;
         private LocalDate dueDate;
         private LocalDate startingDate;
-        private String period;
+        private String periods;
         private String onOffline;
         private String content;
         private int views;
@@ -80,7 +80,7 @@ public class BoardResponseDto {
         private Board.Status status;
         private LocalDate startingDate;
         private String title;
-        private String period;
+        private String periods;
         private List<String> tagList;
 
         private int views;

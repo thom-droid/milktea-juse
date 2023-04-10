@@ -42,10 +42,7 @@ public class QuestionServiceImpl implements QuestionService{
         post.addBoard(board);
         post.addUser(user);
 
-        Notification notification = Notification.of(Notification.Type.NEW_REPLY, board.getUser(), board.getUrl());
-
-        log.info("question saved. the event is ready to be sent");
-
+        Notification notification = Notification.of(Notification.Type.NEW_REPLY, board);
         Question savedQuestion = questionRepository.save(post);
 
         eventPublisher.publishEvent(new NotificationEvent(this, notification));

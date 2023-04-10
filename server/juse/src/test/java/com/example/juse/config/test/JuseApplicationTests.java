@@ -1,6 +1,6 @@
 package com.example.juse.config.test;
 
-import com.example.juse.config.TestDBInstance;
+import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
-@Import(TestDBInstance.class)
+@Import(IntegrationTestDBInstance.class)
 @SpringBootTest
 public abstract class JuseApplicationTests {
 

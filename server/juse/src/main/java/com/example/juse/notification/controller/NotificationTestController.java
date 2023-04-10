@@ -10,14 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-
 /** only used for test */
+//@Profile("local")
 @RequiredArgsConstructor
 @RequestMapping("/notification-test")
 @Controller
@@ -30,9 +29,7 @@ public class NotificationTestController {
     @GetMapping(value = "/event-stream/{uuid}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public @ResponseBody SseEmitter testConnection(@PathVariable("uuid") String userUUID,
                                                    @RequestHeader(value = "Last-Event-ID", required = false) String lastEventId) {
-
         return notificationService.createEventStream(userUUID, lastEventId);
-
     }
 
     @GetMapping("/login")
@@ -50,7 +47,7 @@ public class NotificationTestController {
         return "sse-test";
     }
 
-//    @GetMapping("/index")
+    @GetMapping("/index")
     public String testIndex(@AuthenticationPrincipal PrincipalDetails principalDetails,
                             HttpServletResponse response) {
 
