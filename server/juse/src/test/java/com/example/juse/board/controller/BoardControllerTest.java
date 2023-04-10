@@ -56,7 +56,6 @@ class BoardControllerTest {
     private UriProperties uriProperties;
 
     protected String accessToken;
-
     private final String requestMappingUrl = "http://localhost:8080";
 
     @BeforeEach
@@ -64,14 +63,11 @@ class BoardControllerTest {
         initJwtToken();
     }
     public void initJwtToken() {
-
         TokenDto token = jwtTokenProvider.generateToken("test2@gmail.com", "ROLE_MEMBER");
         accessToken = token.getAccessToken();
-
     }
 
     public void setTokenAsBoardWriter() {
-
         TokenDto token = jwtTokenProvider.generateToken("test1@gmail.com", "ROLE_MEMBER");
         accessToken = token.getAccessToken();
     }
@@ -80,7 +76,6 @@ class BoardControllerTest {
     @WithMockUser
     @Test
     void givenRequestDto_whenPostRequest_thenRequestURLReturned() throws Exception {
-
         //given
         BoardRequestDto.Post postDto = BoardRequestDto.Post.builder()
                 .title("board1")
@@ -113,6 +108,5 @@ class BoardControllerTest {
         String expectedUrl = UriComponentsBuilder.fromHttpUrl(url).pathSegment("boards", "{id}").build(size).toString();
         resultActions.andExpect(jsonPath("$.data.url").value(expectedUrl));
         resultActions.andDo(print());
-
     }
 }

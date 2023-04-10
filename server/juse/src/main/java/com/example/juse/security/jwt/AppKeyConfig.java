@@ -22,5 +22,4 @@ public class AppKeyConfig {
         final String encodedKey = this.encodedBase64SecretKey();
         return new DefaultKeyHolder(encodedKey);
     }
-
 }
