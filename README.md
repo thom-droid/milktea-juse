@@ -121,7 +121,7 @@ Spring에서 지원하는 어노테이션 기반으로 트랜잭션을 관리하
 `@Transactional`의 기본설정인 `Propagation.REQUIRED` 를 통해 해당 메서드에 포함되어 있는 작업들이 한 스레드로 묶여 하나의 트랜잭션으로 수행됩니다 (직접 설정한 객체 그래프나 DTO가 아닌 JPA 프록시 객체를 사용하는 경우에도 세션 유지가 필요하므로 설정해준 부분도 있습니다).
 </br>
 </br>
-따라서 해당 메서드를 실행 중 예외가 발생하게 되면 커밋이 되지 않고 롤백이 됩니다 (롤백 정책은 `@Transactional`의 기본 설정으로 하여, 런타임 예외(unchecked exception) 발생 시 롤백이 수행됩니다). 
+따라서 해당 메서드를 실행 중 예외가 발생하게 되면 커밋이 되지 않고 롤백이 됩니다 (롤백 정책은 `@Transactional`의 기본 설정을 사용하였습니다). 
 
 ```java
 public class BoardServiceImpl {
@@ -341,15 +341,10 @@ public class AppKeyConfigTest {
 또한 api 관점에서 볼 때, 알림 기능은 서버에서 업데이트된 정보만 전달하면 되므로 알림 서버에서 클라이언트 서버로의 단방향 통신을 하는 push api 방식이 필요하다고 생각했습니다.
 <br>
 <br>
-<br>
-이와 같은 판단 하에 SSE(server-sent event) 방식으로 알림을 구현하였습니다.  
-HTML5의 `EventSource` 인터페이스를 활용하여 long polling 방식으로 요청을 보내고, 애플리케이션 서버에서는 `SseEmitter` 클래스를 통해 비동기 요청을 처리하게 됩니다. 
-결과적으로 서버에서 특정한 이벤트가 있을 때에만 응답이 작성되어 클라이언트로 전달되게 됩니다.
-<br>
+이와 같은 판단 하에 SSE(server-sent event) 방식으로 알림을 구현하였습니다. HTML5의 `EventSource` 인터페이스를 활용하여 long polling 방식으로 요청을 보내고, 애플리케이션 서버에서는 `SseEmitter` 클래스를 통해 비동기 요청을 처리하여 body로 응답하게 됩니다. 결과적으로 서버에서 특정한 이벤트가 있을 때에만 응답이 작성되어 클라이언트로 전달되게 됩니다.
 <br>
 <br>
 `EventSource` 를 활용한 SSE 방식은 데이터 타입이 한정적이고 요청 헤더 설정이 불가능한 점 등 구현 범위가 제한적인 한계가 있습니다. 하지만 http 통신을 사용하는 환경에서 쉽고 빠르게 구현이 가능하다는 점을 고려하여 채택하였습니다.
-<br>
 <br>
 <br>
 아래는 JUSE에서 알림 서비스가 동작하는 방식을 도식화한 것입니다.
@@ -357,7 +352,6 @@ HTML5의 `EventSource` 인터페이스를 활용하여 long polling 방식으로
 <br>
 
 <img src="./materials/notification-service.jpg">
-<br>
 <br>
 
 1. 클라이언트가 특정 url로 GET 요청.
