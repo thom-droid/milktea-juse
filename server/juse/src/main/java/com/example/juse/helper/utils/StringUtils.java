@@ -1,5 +1,7 @@
 package com.example.juse.helper.utils;
 
+import com.example.juse.board.entity.Board;
+import com.example.juse.notification.entity.Notification;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -44,6 +46,4 @@ public class StringUtils {
     public static String createBoardRedirectUri(String url, Long id) {
         return UriComponentsBuilder.fromHttpUrl(url).pathSegment("boards", "{id}").build(id).toString();
     }
-
-
 }

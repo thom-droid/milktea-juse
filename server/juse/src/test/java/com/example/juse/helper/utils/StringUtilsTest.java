@@ -1,5 +1,8 @@
 package com.example.juse.helper.utils;
 
+import com.example.juse.board.entity.Board;
+import com.example.juse.notification.entity.Notification;
+import com.example.juse.user.entity.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

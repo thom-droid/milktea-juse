@@ -10,7 +10,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class SseSource {
 
     private static final long TIME_OUT = 60 * 60 * 1000L;
-
     private final String userUUID;
     private final String lastEventId;
     private String emitterId;
@@ -37,6 +36,4 @@ public class SseSource {
         this.data = data;
         this.sseEmitter = sseEmitter;
     }
-
-
 }

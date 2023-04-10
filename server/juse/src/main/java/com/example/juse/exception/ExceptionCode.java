@@ -44,6 +44,8 @@ public enum ExceptionCode {
 
     TAG_NOT_FOUND(-1401, "요청한 태그 정보가 없습니다"),
 
+    NOTIFICATION_NOT_FOUND(-1501, "알림 정보가 없습니다"),
+    NOTIFICATION_LIST_NULL_OR_EMPTY(-1052, "알림이 없습니다"),
     INVALID_METHOD_ARGUMENT(-10000, "유효하지 않은 인자가 입력되었습니다. 파라미터를 다시 확인해주세요"),
     UNKNOWN_ERROR(-10001, "알 수 없는 문제가 발생했습니다");
 

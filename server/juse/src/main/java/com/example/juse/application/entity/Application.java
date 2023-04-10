@@ -53,9 +53,17 @@ public class Application extends Auditing {
 
     }
 
-    public void checkApplicationWriter(long userId) {
+    public void verifyBoardWriter(long userId) {
         if (this.getBoard().getUser().getId() != userId) {
             throw new CustomRuntimeException(ExceptionCode.APPLICATION_INVALID_REQUEST);
         }
+    }
+
+    public void setStatusAsAccepted(){
+        this.status = Status.ACCEPTED;
+    }
+
+    public void setStatusAsDenied() {
+        this.status = Status.DENIED;
     }
 }

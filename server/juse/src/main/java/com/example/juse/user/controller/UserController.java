@@ -67,8 +67,6 @@ public class UserController {
 
         long userId = principalDetails.getSocialUser().getUser().getId();
 
-        System.out.println("userId = " + principalDetails.getSocialUser().getUser().getId());
-
         User foundUser = userService.getJuse(userId);
         UserResponseDto.MyJuse responseDto = userMapper.toMyJuseDtoFrom(foundUser);
 
@@ -88,9 +86,6 @@ public class UserController {
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails
 
     ) {
-        log.info("principal: {}", principalDetails);
-        log.info("social users: {}", principalDetails.getSocialUser());
-        log.info("user: {}", principalDetails.getSocialUser().getUser());
         long userId = principalDetails.getSocialUser().getUser().getId();
 
         User userProfile = userService.getProfile(userId);

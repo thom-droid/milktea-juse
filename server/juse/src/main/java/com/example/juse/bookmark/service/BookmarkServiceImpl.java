@@ -26,32 +26,20 @@ public class BookmarkServiceImpl implements BookmarkService {
     @Transactional
     public Bookmark create(long boardId, long userId) {
         User user = userService.verifyUserById(userId);
-        System.out.println("############user.getId() = " + user.getId());
         Board board = boardService.verifyBoardById(boardId);
+
         if (board.isBookmarkedBy(userId)) {
             delete(boardId, userId);
         }
-//        Bookmark findBookmark = findUserIdBookmark(userId);
-//        System.out.println("############findBookmark.getId() = " + findBookmark.getId());
-//        System.out.println("userId = " + userId);
-//        if (findBookmark.getId() != null && userId == findBookmark.getUser().getId()) {
-//            delete(boardId, userId);
-//            return null;
-//
-//        }
         else {
+            board.incrementBookmarkCount();
+            boardRepository.save(board);
             Bookmark bookmark = Bookmark.builder()
                     .user(user)
                     .board(board)
                     .build();
-
-            // Board 테이블에 bookmark 카운트 추가
-            int bookCount = board.getBookmarks();
-            board.setBookmarks(++bookCount);
-            boardRepository.save(board);
             return bookmarkRepository.save(bookmark);
         }
-
         return null;
     }
 

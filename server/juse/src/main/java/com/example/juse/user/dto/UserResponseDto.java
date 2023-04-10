@@ -19,7 +19,6 @@ public class UserResponseDto {
     @Setter
     private String img;
     private String myImg;
-
     private List<String> skillStackTags;
 
     @Getter
@@ -27,13 +26,11 @@ public class UserResponseDto {
     @AllArgsConstructor
     @Builder
     public static class MyJuse {
-
         private Long id;
         private List<BoardResponseDto.Multi> myBookmarkList;
         private List<BoardResponseDto.Multi> myParticipationList;
         private List<BoardResponseDto.Multi> myBoards;
         private List<BoardResponseDto.Multi> myApplicationList;
-
     }
 
     @Getter
@@ -41,7 +38,6 @@ public class UserResponseDto {
     @AllArgsConstructor
     @Builder
     public static class MyProfile {
-
         private long id;
         private String introduction;
         private String email;
@@ -53,7 +49,7 @@ public class UserResponseDto {
         @Setter
         private String img;
         private String myImg;
-
+        private String uuid;
     }
 
     @Getter
