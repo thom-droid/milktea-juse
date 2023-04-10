@@ -1,6 +1,6 @@
 package com.example.juse.application.controller;
 
-import com.example.juse.config.TestDBInstance;
+import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.application.entity.Application;
 import com.example.juse.application.repository.ApplicationRepository;
 import com.example.juse.board.entity.Board;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RecordApplicationEvents
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
-@Import(TestDBInstance.class)
+@Import(IntegrationTestDBInstance.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 class ApplicationControllerTest {

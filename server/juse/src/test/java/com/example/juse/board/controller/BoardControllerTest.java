@@ -3,7 +3,7 @@ package com.example.juse.board.controller;
 import com.example.juse.board.dto.BoardRequestDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
-import com.example.juse.config.TestDBInstance;
+import com.example.juse.config.IntegrationTestDBInstance;
 import com.example.juse.security.config.UriProperties;
 import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.jwt.TokenDto;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
-@Import(TestDBInstance.class)
+@Import(IntegrationTestDBInstance.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 class BoardControllerTest {

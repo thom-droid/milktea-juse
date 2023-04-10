@@ -6,11 +6,13 @@ import com.example.juse.answer.repository.AnswerRepository;
 import com.example.juse.board.entity.Board;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.notification.entity.Notification;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.service.QuestionService;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,16 +29,13 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     @Transactional
     public Answer create(Answer mappedObj) {
-
         Question question = questionService.verifyQuestionById(mappedObj.getQuestion().getId());
         Board board = question.getBoard();
-        long userId = mappedObj.getUser().getId();
+        long boardWriterId = mappedObj.getUser().getId();
 
-        if (!board.isCreatedBy(userId)) {
-            throw new CustomRuntimeException(ExceptionCode.ANSWER_BOARD_WRITER_NOT_MATCHED);
-        }
+        checkBoardWriterValidity(board, boardWriterId);
 
-        User user = userService.verifyUserById(userId);
+        User user = userService.verifyUserById(boardWriterId);
         mappedObj.addQuestion(question);
         mappedObj.addUser(user);
 
@@ -45,14 +44,8 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Answer update(Answer mappedObj) {
-
         Answer answer = verifyAnswerById(mappedObj.getId());
-        long userId = mappedObj.getUser().getId();
-
-        if (!answer.isCreatedBy(userId)) {
-            throw new CustomRuntimeException(ExceptionCode.ANSWER_WRITER_NOT_MATCHED);
-        }
-
+        checkAnswerWriterValidity(answer, mappedObj.getUser().getId());
         answerMapper.updateEntityFromSource(answer, mappedObj);
 
         return answerRepository.save(answer);
@@ -61,13 +54,8 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public void delete(long answerId, long userId) {
         Answer answer = verifyAnswerById(answerId);
-
-        if (!answer.isCreatedBy(userId)) {
-            throw new CustomRuntimeException(ExceptionCode.ANSWER_WRITER_NOT_MATCHED);
-        }
-
+        checkAnswerWriterValidity(answer, userId);
         answerRepository.delete(answer);
-
     }
 
     @Override
@@ -77,4 +65,15 @@ public class AnswerServiceImpl implements AnswerService {
         );
     }
 
+    private void checkBoardWriterValidity(Board board, long userId) {
+        if (!board.isCreatedBy(userId)) {
+            throw new CustomRuntimeException(ExceptionCode.ANSWER_BOARD_WRITER_NOT_MATCHED);
+        }
+    }
+
+    private void checkAnswerWriterValidity(Answer answer, long answerWriterId) {
+        if (!answer.isCreatedBy(answerWriterId)) {
+            throw new CustomRuntimeException(ExceptionCode.ANSWER_WRITER_NOT_MATCHED);
+        }
+    }
 }

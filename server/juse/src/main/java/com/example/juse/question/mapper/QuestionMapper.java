@@ -5,7 +5,7 @@ import com.example.juse.question.dto.QuestionResponseDto;
 import com.example.juse.question.entity.Question;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionMapper {
 
     @Mapping(target = "user.id", source = "userId")

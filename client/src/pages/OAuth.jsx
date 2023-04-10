@@ -13,8 +13,14 @@ const OAuth = () => {
     if (isUser === '1') {
       apis
         .getUsers(token)
-        .then((data) => setCookie('userId', data.id, { path: '/' }))
-        .then(() => setCookie('user', token, { path: '/' }))
+        .then((data) => {
+          setCookie('userId', data.id, { path: '/' });
+          setCookie('user', token, { path: '/' });
+          setCookie('userUuid', data.uuid);
+          setCookie('userProfileImage', data.img);
+          console.log(`fetched uuid : ${data.uuid}`);
+          console.log(`fetched uuid : ${data.img}`);
+        })
         .then(() => navigate('/'));
     } else {
       navigate('/join', { state: { token } });
