@@ -103,9 +103,10 @@ class QuestionControllerTest {
                 .build();
 
         Notification.Type expectedType = Notification.Type.NEW_REPLY;
-        String expectedString = expectedType.getMessage();
         Board board = boardRepository.findById(requestDto.getBoardId()).orElseThrow();
         Long expectedReceiverId = board.getUser().getId();
+
+        String expectedString = "게시글 test1에 "+ expectedType.getMessage();
 
         String requestBody = gson.toJson(requestDto);
 

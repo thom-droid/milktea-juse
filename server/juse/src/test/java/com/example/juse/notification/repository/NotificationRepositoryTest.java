@@ -1,5 +1,6 @@
 package com.example.juse.notification.repository;
 
+import com.example.juse.board.entity.Board;
 import com.example.juse.config.JpaTestDBInstance;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.user.entity.User;
@@ -26,9 +27,10 @@ class NotificationRepositoryTest {
     @Test
     void findTopFiveByReceiverIdOrderByCreatedAt() {
         User user = userRepository.findByEmail("test1@gmail.com");
+        Board board = Board.builder().id(1L).title("test").url("url").build();
 
         for (int i = 0; i < 10; i++) {
-            Notification notification = Notification.of(Notification.Type.NEW_APPLICATION, user, null);
+            Notification notification = Notification.of(Notification.Type.NEW_APPLICATION, user, board);
             notificationRepository.save(notification);
         }
 
@@ -43,9 +45,6 @@ class NotificationRepositoryTest {
         List<Notification> list2 = notificationRepository.findTop5ByReceiverIdOrderByCreatedAtDesc(user.getId());
 
         assertEquals(5, list2.size());
-        System.out.println(list2.get(0).getCreatedAt());
-        System.out.println(list2.get(1).getCreatedAt());
-//        assertTrue(list2.get(0).getCreatedAt().isAfter(list2.get(1).getCreatedAt()));
         assertEquals(9, (long) list2.get(0).getId());
 
         for (Notification n : list2) {
