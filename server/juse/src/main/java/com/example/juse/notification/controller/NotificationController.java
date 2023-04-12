@@ -7,6 +7,7 @@ import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.mapper.NotificationMapper;
 import com.example.juse.notification.service.NotificationService;
 import com.example.juse.security.oauth.PrincipalDetails;
+import com.example.juse.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,13 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -34,12 +31,9 @@ public class NotificationController {
     private final NotificationService notificationService;
     private final NotificationMapper notificationMapper;
 
-
-    @GetMapping(value = "/event-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter createEventStream(@AuthenticationPrincipal PrincipalDetails principalDetails,
+    @GetMapping(value = "/notification/event-stream/{uuid}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter createEventStream(@PathVariable(value = "uuid") String userUUID,
                                         @RequestHeader(value = "Last-Event-ID", required = false) String lastEventId) {
-        String userUUID = principalDetails.getSocialUser().getUser().getUuid();
-
         return notificationService.createEventStream(userUUID, lastEventId);
 
     }
@@ -49,7 +43,6 @@ public class NotificationController {
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "isRead", defaultValue = "false") Boolean isRead
-
     ) {
         Long userId = principalDetails.getSocialUser().getUser().getId();
 
@@ -60,11 +53,29 @@ public class NotificationController {
         Page<Notification> responsePage = notificationService.getNotificationList(userId, isRead, pageable);
         List<Notification> content = responsePage.getContent();
         List<NotificationResponseDto> responseDtoList = notificationMapper.mapToDtoListFromEntityList(content);
-
-        responseDtoList.forEach(responseDto -> log.info("notification msg : {}", responseDto.getMessage()));
-
         Pagination pagination = Pagination.of(responsePage);
 
         return new ResponseEntity<>(new MultiResponseDto<>(responseDtoList, pagination), HttpStatus.OK);
+    }
+
+    @GetMapping("/notifications/nav")
+    public ResponseEntity<MultiResponseDto<NotificationResponseDto>> getNotificationListForNav(
+            @AuthenticationPrincipal PrincipalDetails principalDetails
+    ) {
+        Long userId = principalDetails.getSocialUser().getUser().getId();
+        List<Notification> notificationList = notificationService.getNotificationForNav(userId);
+        List<NotificationResponseDto> notificationResponseDtos = notificationMapper.mapToDtoListFromEntityList(notificationList);
+
+        return new ResponseEntity<>(new MultiResponseDto<>(notificationResponseDtos, null), HttpStatus.OK);
+    }
+
+    @PatchMapping("/notifications/{notification-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateNotificationAsRead(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("notification-id") Long notificationId
+    ) {
+        User user = principalDetails.getSocialUser().getUser();
+        notificationService.setNotificationAsRead(user, notificationId);
     }
 }

@@ -18,14 +18,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @TestConfiguration
-public class TestDBInstance {
+public class IntegrationTestDBInstance {
 
-    public TestDBInstance(TagRepository tagRepository,
-                          SocialUserRepository socialUserRepository,
-                          UserRepository userRepository,
-                          UserTagRepository userTagRepository,
-                          BoardRepository boardRepository,
-                          JwtTokenProvider jwtTokenProvider) {
+    public IntegrationTestDBInstance(TagRepository tagRepository,
+                                     SocialUserRepository socialUserRepository,
+                                     UserRepository userRepository,
+                                     UserTagRepository userTagRepository,
+                                     BoardRepository boardRepository,
+                                     JwtTokenProvider jwtTokenProvider) {
         this.tagRepository = tagRepository;
         this.socialUserRepository = socialUserRepository;
         this.userRepository = userRepository;

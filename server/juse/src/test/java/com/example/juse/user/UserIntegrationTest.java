@@ -26,37 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(locations = {"/application.properties", "/application-oauth-local.properties"})
 @AutoConfigureMockMvc
-//@ContextConfiguration(
-//        classes = {
-//                UserIntegrationTest.StorageTestConfig.class,
-//                UserController.class,
-//                UserServiceImpl.class,
-//                UserRepository.class,
-//                JpaTestConfig.class
-//        }
-//)
 @SpringBootTest(
         properties = "jwt.secret=${random.uuid}",
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public class UserIntegrationTest {
-
-//    @Configuration
-//    static class StorageTestConfig {
-//
-//        @Bean
-//        public S3Client s3Client() {
-//            return S3Client.builder()
-//                    .region(Region.AP_NORTHEAST_2)
-//                    .build();
-//        }
-//
-//        @Bean
-//        public StorageService storageService() {
-//            return new S3StorageService(s3Client());
-//        }
-//
-//    }
 
     @Autowired
     UserController userController;
@@ -91,7 +65,6 @@ public class UserIntegrationTest {
 
         //token
         accessToken = jwtTokenProvider.generateToken(socialUser.getEmail(), "USER_ROLE").getAccessToken();
-
     }
 
     @Test

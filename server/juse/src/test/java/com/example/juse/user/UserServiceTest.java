@@ -32,13 +32,10 @@ import static org.mockito.BDDMockito.given;
 @ContextConfiguration(classes = {UserServiceImpl.class})
 @SpringBootTest
 public class UserServiceTest {
-
     @Autowired
     private UserService userService;
-
     @MockBean
     UserRepository userRepository;
-
     @MockBean
     TagService tagService;
 
@@ -47,7 +44,6 @@ public class UserServiceTest {
 
     @MockBean
     UserMapper userMapper;
-
     @MockBean
     StorageService storageService;
 
@@ -82,6 +78,5 @@ public class UserServiceTest {
         assertEquals(testUser.getMyImg(), createdUser.getMyImg());
 
     }
-
 
 }

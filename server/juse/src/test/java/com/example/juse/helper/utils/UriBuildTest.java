@@ -1,8 +1,6 @@
 package com.example.juse.helper.utils;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -11,12 +9,10 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(MockitoExtension.class)
 public class UriBuildTest {
 
     @Test
     public void givenMockMultiPartFile_thenFileNameReturned() {
-
         MockMultipartFile mockMultipartFile = new MockMultipartFile("image", "image.jpeg", MediaType.IMAGE_JPEG_VALUE, getRandomByte(5));
 
         //expected
@@ -25,7 +21,6 @@ public class UriBuildTest {
         System.out.println(actual);
         assertEquals(expected.length(), actual.length());
         assertEquals(expected.indexOf("image"), actual.indexOf("image"));
-
     }
 
     @Test
